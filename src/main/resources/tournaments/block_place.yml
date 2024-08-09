@@ -1,0 +1,86 @@
+# If you set this to false, player will not receive any points
+Active: true
+
+# Available time periods:
+# DAILY
+# WEEKLY
+# MONTHLY
+TimePeriod: DAILY
+
+# You can view all objectives here
+# https://waterarchery.gitbook.io/littournaments-wiki/info/available-objectives
+# Do not use anything that not listed here.
+Objective: BLOCK_PLACE_TOURNAMENT
+
+# It will make glowing effects on the
+# /tournament GUI items if player is already
+# joined the tournaments.
+GlowItemIfJoined: true
+
+# Join checkers allows you to modify
+# how players can join tournaments.
+# Permission for joining tournaments is: littournaments.player.join.tournamentName
+# Permission for auto joining tournaments is: littournaments.player.autojoin
+JoinChecker:
+  AutoJoin:
+    Enabled: true
+    RequirePermission: false
+    MessageOnAutoJoin: true
+  Join:
+    RequirePermission: false
+
+# Checkers allows you to decide when a player
+# getting a point or not.
+# For example, block place checker will add point
+# if placed block's type is listed in Action whitelist,
+# and it is placed in the World Whitelist worlds.
+#
+# If you set whitelsit to '*' it will always return true
+# unless action or world is listed in blacklist.
+Checkers:
+  Action:
+    Whitelist:
+      - '*'
+    Blacklist:
+      - DIRT
+  World:
+    Whitelist:
+      - '*'
+    BlackList:
+      - casE_sEnStive_world
+
+# You can define and delete conditional commands here.
+# Available commands:
+#
+# TOURNAMENT_START
+# TOURNAMENT_END
+#
+# Available command types:
+#
+# [BROADCAST]
+# [COMMAND]
+ConditionalCommands:
+  TOURNAMENT_START:
+    - '[BROADCAST] &bBlock place tournament is started! &7(/tournament)'
+  TOURNAMENT_END:
+    - '[BROADCAST] &bBlock place tournament is ended! New one will be started few seconds later. &7(/tournament)'
+
+# You can define and delete tournament rewards
+# Available command types:
+#
+# [BROADCAST]
+# [COMMAND]
+# [MESSAGE]
+Rewards:
+  1:
+    - '[MESSAGE] &bCongratulations! You won the block place tournament.'
+    - '[MESSAGE] &bYou will receive your rewards in a second.'
+    - '[COMMAND] eco give %player% 1000'
+  2:
+    - '[MESSAGE] &bCongratulations! You finished second in the block place tournament.'
+    - '[MESSAGE] &bYou will receive your rewards in a second.'
+    - '[COMMAND] eco give %player% 500'
+  3:
+    - '[MESSAGE] &bCongratulations! You finished third in the block place tournament.'
+    - '[MESSAGE] &bYou will receive your rewards in a second.'
+    - '[COMMAND] eco give %player% 100'
