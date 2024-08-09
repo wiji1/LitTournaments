@@ -11,6 +11,7 @@ import me.waterarchery.littournaments.listeners.JoinLeaveListeners;
 import me.waterarchery.littournaments.listeners.tournamentListeners.*;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentPlayer;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -118,6 +119,9 @@ public class LoadHandler {
     public void registerHooks() {
         LitLibs libs = LitTournaments.getLitLibs();
         Logger logger = libs.getLogger();
+
+        // bStats
+        new Metrics(LitTournaments.getInstance(), 22957);
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             logger.log("Found PlaceHolderAPI hook");
