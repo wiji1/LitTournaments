@@ -29,6 +29,28 @@ Configure the plugin by editing the `config.yml` file located in the `plugins/Li
 - `/tournament leave` - Leaves from a tournaments
 - `/tournament reload` - Reloads the plugin.
 
+## Integrating
+
+  Integrating is very easy. Just add LitMinions to local dependency or import it with Maven. After that you should softdepend LitMinions to your in your plugin.yml. It should be like this ```softdepend: [ LitMinions ]```
+
+  Latest version: ![Release](https://jitpack.io/v/WaterArchery/LitTournaments.svg)
+  
+  Maven Repository
+  
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+
+  Dependency
+
+	<dependency>
+	    <groupId>com.github.WaterArchery</groupId>
+	    <artifactId>LitTournaments</artifactId>
+	    <version>1.0.2b</version>
+	    <scope>provided</scope>
+	</dependency>
+ 
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request with your changes.
