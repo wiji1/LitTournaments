@@ -147,6 +147,10 @@ public class LoadHandler {
             logger.log("Found ExcellentCrates hook.");
             instance.getServer().getPluginManager().registerEvents(new ExcellentCrateOpenListener(), instance);
         }
+        if (Bukkit.getPluginManager().isPluginEnabled("Duels")) {
+            logger.log("Found Duels hook.");
+            instance.getServer().getPluginManager().registerEvents(new DuelsWinListener(), instance);
+        }
     }
 
     public void saveFiles() {
