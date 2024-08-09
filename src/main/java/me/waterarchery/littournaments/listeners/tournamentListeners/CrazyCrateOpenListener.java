@@ -1,34 +1,31 @@
 package me.waterarchery.littournaments.listeners.tournamentListeners;
 
+import com.badbones69.crazycrates.api.events.CrateOpenEvent;
+import com.badbones69.crazycrates.api.objects.Crate;
 import me.waterarchery.littournaments.handlers.PointHandler;
 import me.waterarchery.littournaments.handlers.TournamentHandler;
 import me.waterarchery.littournaments.models.Tournament;
-import me.waterarchery.littournaments.models.tournaments.PlayerFishTournament;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
+import me.waterarchery.littournaments.models.tournaments.CrazyCrateTournament;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerFishEvent;
 
 import java.util.List;
 
-public class PlayerFishListener implements Listener {
+public class CrazyCrateOpenListener implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockPlace(PlayerFishEvent event) {
+    public void onCrateOpen(CrateOpenEvent event) {
         PointHandler pointHandler = PointHandler.getInstance();
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
+
         Player player = event.getPlayer();
-        Entity entity = event.getCaught();
+        Crate crate = event.getCrate();
 
-        if (entity == null) return;
-
-        World world = entity.getWorld();
-        List<Tournament> tournaments = tournamentHandler.getTournaments(PlayerFishTournament.class);
+        List<Tournament> tournaments = tournamentHandler.getTournaments(CrazyCrateTournament.class);
         for (Tournament tournament : tournaments) {
-            pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), entity.getType().name(), 1);
+            pointHandler.addPoint(player.getUniqueId(), tournament, player.getWorld().getName(), crate.getName(), 1);
         }
     }
 

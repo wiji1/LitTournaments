@@ -4,5 +4,13 @@ main: me.waterarchery.littournaments.LitTournaments
 api-version: '1.13'
 authors: [ WaterArchery ]
 description: Create fun tournaments for players
+softdepend:
+  - NuVotifier
+  - Votifier
+  - CrazyCrates
+  - ExcellentCrates
+  - Essentials
+  - EssentialsX
+  - Duels
 depend:
   - LitLibs

@@ -106,6 +106,7 @@ public class LoadHandler {
         instance.getServer().getPluginManager().registerEvents(new ItemCraftListener(), instance);
         instance.getServer().getPluginManager().registerEvents(new MobKillListener(), instance);
         instance.getServer().getPluginManager().registerEvents(new ItemBreakListener(), instance);
+        instance.getServer().getPluginManager().registerEvents(new PlayerDamageListener(), instance);
     }
 
     public void registerCommands() {
@@ -119,14 +120,32 @@ public class LoadHandler {
     public void registerHooks() {
         LitLibs libs = LitTournaments.getLitLibs();
         Logger logger = libs.getLogger();
+        LitTournaments instance = LitTournaments.getInstance();
 
         // bStats
-        new Metrics(LitTournaments.getInstance(), 22957);
+        new Metrics(instance, 22957);
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             logger.log("Found PlaceHolderAPI hook");
             PlaceholderAPIHook placeholderAPIHook = new PlaceholderAPIHook();
             placeholderAPIHook.register();
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("Essentials") || Bukkit.getPluginManager().isPluginEnabled("EssentialsX")) {
+            logger.log("Found EssentialsX hook.");
+            instance.getServer().getPluginManager().registerEvents(new EssentialsXMoneyListener(), instance);
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("Votifier") || Bukkit.getPluginManager().isPluginEnabled("NuVotifier")) {
+            logger.log("Found Votifier hook.");
+            instance.getServer().getPluginManager().registerEvents(new VotifierVoteListener(), instance);
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("CrazyCrates")) {
+            logger.log("Found CrazyCrates hook.");
+            instance.getServer().getPluginManager().registerEvents(new CrazyCrateOpenListener(), instance);
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("ExcellentCrates")) {
+            logger.log("Found ExcellentCrates hook.");
+            instance.getServer().getPluginManager().registerEvents(new ExcellentCrateOpenListener(), instance);
         }
     }
 
