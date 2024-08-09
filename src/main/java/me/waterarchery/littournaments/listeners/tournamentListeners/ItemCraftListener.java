@@ -27,7 +27,7 @@ public class ItemCraftListener implements Listener {
             if (itemStack == null) return;
             List<Tournament> tournaments = tournamentHandler.getTournaments(ItemCraftTournament.class);
             for (Tournament tournament : tournaments) {
-                pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), itemStack.getType().name());
+                pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), itemStack.getType().name(), 1);
             }
         }
     }

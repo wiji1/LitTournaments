@@ -26,7 +26,7 @@ public class BlockBreakListener implements Listener {
 
         List<Tournament> tournaments = tournamentHandler.getTournaments(BlockBreakTournament.class);
         for (Tournament tournament : tournaments) {
-            pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), block.getType().name());
+            pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), block.getType().name(), 1);
         }
     }
 

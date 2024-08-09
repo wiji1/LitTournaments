@@ -32,7 +32,7 @@ public class MobKillListener implements Listener {
 
         List<Tournament> tournaments = tournamentHandler.getTournaments(MobKillTournament.class);
         for (Tournament tournament : tournaments) {
-            pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), victim.getType().name());
+            pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), victim.getType().name(), 1);
         }
     }
 

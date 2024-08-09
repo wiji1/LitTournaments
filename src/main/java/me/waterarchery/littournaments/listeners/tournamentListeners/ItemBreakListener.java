@@ -26,7 +26,7 @@ public class ItemBreakListener implements Listener {
 
         List<Tournament> tournaments = tournamentHandler.getTournaments(ItemBreakTournament.class);
         for (Tournament tournament : tournaments) {
-            pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), itemStack.getType().name());
+            pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), itemStack.getType().name(), 1);
         }
     }
 

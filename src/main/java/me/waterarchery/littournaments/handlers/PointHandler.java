@@ -23,13 +23,13 @@ public class PointHandler {
 
     private PointHandler() { }
 
-    public void addPoint(UUID uuid, Tournament tournament, String worldName, String actionName) {
+    public void addPoint(UUID uuid, Tournament tournament, String worldName, String actionName, int point) {
         if (tournament.checkWorldEnabled(worldName) && tournament.checkActionAllowed(actionName)) {
-            addPoint(uuid, tournament);
+            addPoint(uuid, tournament, point);
         }
     }
 
-    public void addPoint(UUID uuid, Tournament tournament) {
+    public void addPoint(UUID uuid, Tournament tournament, int point) {
         if (!tournament.isActive()) return;
 
         PlayerHandler playerHandler = PlayerHandler.getInstance();
@@ -38,11 +38,11 @@ public class PointHandler {
 
         if (tournamentPlayer.isRegistered(tournament)) {
             Database database = LitTournaments.getDatabase();
-            database.addPoint(uuid, tournament, 1);
+            database.addPoint(uuid, tournament, point);
 
             HashMap<Tournament, Long> map = tournamentPlayer.getTournamentValueMap();
             long currentPoint = map.getOrDefault(tournament, 0L);
-            map.replace(tournament, currentPoint + 1);
+            map.replace(tournament, currentPoint + point);
         }
         else if (tournamentPlayer.isLoading()) {
             Player player = Bukkit.getPlayer(uuid);
