@@ -63,6 +63,41 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 return valueHandler.getPlayerNameWithPosition(pos, tournament);
             }
         }
+        else if(params.contains("_remaining_time_days")) {
+            String tournamentName = params.split("_remaining_time_days")[0];
+            Tournament tournament = tournamentHandler.getTournament(tournamentName);
+            if (tournament != null) {
+                return tournament.getRemainingTime().toDays() + "";
+            }
+        }
+        else if(params.contains("_remaining_time_hours")) {
+            String tournamentName = params.split("_remaining_time_hours")[0];
+            Tournament tournament = tournamentHandler.getTournament(tournamentName);
+            if (tournament != null) {
+                return tournament.getRemainingTime().toHours() + "";
+            }
+        }
+        else if(params.contains("_remaining_time_minutes")) {
+            String tournamentName = params.split("_remaining_time_minutes")[0];
+            Tournament tournament = tournamentHandler.getTournament(tournamentName);
+            if (tournament != null) {
+                return tournament.getRemainingTime().toMinutes() + "";
+            }
+        }
+        else if(params.contains("_remaining_time_seconds")) {
+            String tournamentName = params.split("_remaining_time_seconds")[0];
+            Tournament tournament = tournamentHandler.getTournament(tournamentName);
+            if (tournament != null) {
+                return tournament.getRemainingTime().toSeconds() + "";
+            }
+        }
+        else if(params.contains("_remaining_time")) {
+            String tournamentName = params.split("_remaining_time")[0];
+            Tournament tournament = tournamentHandler.getTournament(tournamentName);
+            if (tournament != null) {
+                return valueHandler.getRemainingTime(tournament);
+            }
+        }
 
         return null;
     }

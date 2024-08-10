@@ -55,10 +55,9 @@ public class ValueHandler {
 
     public String getRemainingTime(Tournament tournament) {
         LitLibs libs = LitTournaments.getLitLibs();
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime finishTime = tournament.getFinishTime();
-        Duration remaining = Duration.between(now, finishTime);
+
         String remainingTime = libs.getMessageHandler().getLangMessage("Placeholders.RemainingTime");
+        Duration remaining = tournament.getRemainingTime();
 
         return remainingTime.replace("%day%", remaining.toDaysPart() + "")
                 .replace("%hour%", remaining.toHoursPart() + "")

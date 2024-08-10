@@ -21,6 +21,7 @@ public class TournamentMenuFile extends ConfigManager {
         addDefault(ConfigPart.noComment("FillMenu.FillItem.Name", "&8"));
         addDefault(ConfigPart.noComment("FillMenu.FillItem.Material", "GRAY_STAINED_GLASS_PANE"));
         addDefault(ConfigPart.noComment("FillMenu.FillItem.CustomModelData", -1));
+        addDefault(ConfigPart.noComment("FillMenu.FillItem.HideAttributes", true));
 
         addOptional(ConfigPart.of("Items.block_break", null, Arrays.asList(
                 "Use tournament id only.",
@@ -32,6 +33,7 @@ public class TournamentMenuFile extends ConfigManager {
         addOptional(ConfigPart.noComment("Items.block_break.Name", "&bBlock Break Tournament"));
         addOptional(ConfigPart.noComment("Items.block_break.Material", "COBBLESTONE"));
         addOptional(ConfigPart.noComment("Items.block_break.Slot", 10));
+        addOptional(ConfigPart.noComment("Items.block_break.HideAttributes", true));
         addOptional(ConfigPart.of("Items.block_break.CustomModelData", -1,
                 List.of("You can set it -1 to disable")));
         addOptional(ConfigPart.noComment("Items.block_break.Lore", Arrays.asList(
@@ -63,6 +65,7 @@ public class TournamentMenuFile extends ConfigManager {
         addOptional(ConfigPart.noComment("Items.block_place.Name", "&bBlock Place Tournament"));
         addOptional(ConfigPart.noComment("Items.block_place.Material", "OAK_LOG"));
         addOptional(ConfigPart.noComment("Items.block_place.Slot", 13));
+        addOptional(ConfigPart.noComment("Items.block_place.HideAttributes", true));
         addOptional(ConfigPart.of("Items.block_place.CustomModelData", -1,
                 List.of("You can set it -1 to disable")));
         addOptional(ConfigPart.noComment("Items.block_place.Lore", Arrays.asList(
@@ -94,6 +97,7 @@ public class TournamentMenuFile extends ConfigManager {
         addOptional(ConfigPart.noComment("Items.item_craft.Name", "&bCraft Item Tournament"));
         addOptional(ConfigPart.noComment("Items.item_craft.Material", "CRAFTING_TABLE"));
         addOptional(ConfigPart.noComment("Items.item_craft.Slot", 16));
+        addOptional(ConfigPart.noComment("Items.item_craft.HideAttributes", true));
         addOptional(ConfigPart.of("Items.item_craft.CustomModelData", -1,
                 List.of("You can set it -1 to disable")));
         addOptional(ConfigPart.noComment("Items.item_craft.Lore", Arrays.asList(
@@ -125,6 +129,7 @@ public class TournamentMenuFile extends ConfigManager {
         addOptional(ConfigPart.noComment("Items.mob_kill.Name", "&bMob Kill Tournament"));
         addOptional(ConfigPart.noComment("Items.mob_kill.Material", "DIAMOND_SWORD"));
         addOptional(ConfigPart.noComment("Items.mob_kill.Slot", 28));
+        addOptional(ConfigPart.noComment("Items.mob_kill.HideAttributes", true));
         addOptional(ConfigPart.of("Items.mob_kill.CustomModelData", -1,
                 List.of("You can set it -1 to disable")));
         addOptional(ConfigPart.noComment("Items.mob_kill.Lore", Arrays.asList(
@@ -156,6 +161,7 @@ public class TournamentMenuFile extends ConfigManager {
         addOptional(ConfigPart.noComment("Items.item_break.Name", "&bItem Break Tournament"));
         addOptional(ConfigPart.noComment("Items.item_break.Material", "ANVIL"));
         addOptional(ConfigPart.noComment("Items.item_break.Slot", 31));
+        addOptional(ConfigPart.noComment("Items.item_break.HideAttributes", true));
         addOptional(ConfigPart.of("Items.item_break.CustomModelData", -1,
                 List.of("You can set it -1 to disable")));
         addOptional(ConfigPart.noComment("Items.item_break.Lore", Arrays.asList(
@@ -187,6 +193,7 @@ public class TournamentMenuFile extends ConfigManager {
         addOptional(ConfigPart.noComment("Items.player_kill.Name", "&bPlayer Kill Tournament"));
         addOptional(ConfigPart.noComment("Items.player_kill.Material", "SHIELD"));
         addOptional(ConfigPart.noComment("Items.player_kill.Slot", 34));
+        addOptional(ConfigPart.noComment("Items.player_kill.HideAttributes", true));
         addOptional(ConfigPart.of("Items.player_kill.CustomModelData", -1,
                 List.of("You can set it -1 to disable")));
         addOptional(ConfigPart.noComment("Items.player_kill.Lore", Arrays.asList(

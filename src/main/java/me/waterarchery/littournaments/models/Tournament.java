@@ -83,6 +83,12 @@ public class Tournament {
         return null;
     }
 
+    public Duration getRemainingTime() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime finishTime = getFinishTime();
+        return Duration.between(now, finishTime);
+    }
+
     public void startFinishTask() {
         if (finishTask != null) finishTask.cancel();
 

@@ -7,6 +7,7 @@ import me.waterarchery.litlibs.libs.xseries.XMaterial;
 import me.waterarchery.littournaments.LitTournaments;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -46,6 +47,7 @@ public class GUIHandler {
 
         String name = yml.getString(path + "." + itemName + ".Name");
         String materialName = yml.getString(path + "." + itemName + ".Material");
+        boolean hideAttributes = yml.getBoolean(path + "." + itemName + ".HideAttributes", true);
         List<String> rawLore = yml.getStringList(path + "." + itemName + ".Lore");
         List<String> lore = new ArrayList<>();
         int customModelData = yml.getInt(path + "." + itemName + ".CustomModelData", -1);
@@ -61,6 +63,7 @@ public class GUIHandler {
 
         itemMeta.setDisplayName(mesHandler.updateColors(name));
         itemMeta.setLore(lore);
+        if (hideAttributes) itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         if (customModelData != -1) itemMeta.setCustomModelData(customModelData);
 
         itemStack.setItemMeta(itemMeta);
