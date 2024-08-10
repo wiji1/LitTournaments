@@ -3,6 +3,7 @@ package me.waterarchery.littournaments.handlers;
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.configuration.ConfigManager;
 import me.waterarchery.litlibs.handlers.MessageHandler;
+import me.waterarchery.litlibs.libs.skullcreator.SkullCreator;
 import me.waterarchery.litlibs.libs.xseries.XMaterial;
 import me.waterarchery.littournaments.LitTournaments;
 import org.bukkit.Material;
@@ -23,7 +24,8 @@ public class GUIHandler {
         return instance;
     }
 
-    private GUIHandler() { }
+    private GUIHandler() {
+    }
 
     public String getMenuTitle(ConfigManager menu) {
         LitLibs libs = LitTournaments.getLitLibs();
@@ -46,15 +48,13 @@ public class GUIHandler {
         MessageHandler mesHandler = libs.getMessageHandler();
 
         String name = yml.getString(path + "." + itemName + ".Name");
-        String materialName = yml.getString(path + "." + itemName + ".Material");
+        String materialName = yml.getString(path + "." + itemName + ".Material", "BEDROCK");
         boolean hideAttributes = yml.getBoolean(path + "." + itemName + ".HideAttributes", true);
         List<String> rawLore = yml.getStringList(path + "." + itemName + ".Lore");
         List<String> lore = new ArrayList<>();
         int customModelData = yml.getInt(path + "." + itemName + ".CustomModelData", -1);
 
-        ItemStack itemStack = XMaterial.matchXMaterial(materialName)
-                .map(XMaterial::parseItem)
-                .orElse(new ItemStack(Material.STONE));
+        ItemStack itemStack = parseMaterial(materialName);
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         for (String part : rawLore) {
@@ -69,6 +69,18 @@ public class GUIHandler {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    private ItemStack parseMaterial(String material) {
+        if (material.contains("HEAD-")) {
+            String headBase = material.replace("HEAD-", "");
+            return SkullCreator.itemFromBase64(headBase);
+        }
+        else {
+            return XMaterial.matchXMaterial(material)
+                    .map(XMaterial::parseItem)
+                    .orElse(new ItemStack(Material.STONE));
+        }
     }
 
 }

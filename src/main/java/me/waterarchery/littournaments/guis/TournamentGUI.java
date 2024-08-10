@@ -43,12 +43,23 @@ public class TournamentGUI {
                 .disableAllInteractions()
                 .create();
 
+        // Filling GUI
         if (yml.getBoolean("FillMenu.Enabled", true)) {
             ItemStack itemStack = guiHandler.craftItemStack(manager, "FillItem", "FillMenu");
             GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
             gui.getFiller().fill(guiItem);
         }
 
+        // Adding decoration items into GUI
+        for (String decorationItem : Objects.requireNonNull(yml.getConfigurationSection("Decoration")).getKeys(false)) {
+            ItemStack itemStack = guiHandler.craftItemStack(manager, decorationItem, "Decoration");
+            int slot = yml.getInt("Decoration." + decorationItem + ".Slot");
+            GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
+
+            gui.setItem(slot, guiItem);
+        }
+
+        // Adding tournament items into GUI
         for (String tournamentName : Objects.requireNonNull(yml.getConfigurationSection("Items")).getKeys(false)) {
             Tournament tournament = tournamentHandler.getTournament(tournamentName);
 
@@ -77,7 +88,7 @@ public class TournamentGUI {
                             libs.getMessageHandler().sendLangMessage(player, "SuccessfullyRegistered");
                             gui.update();
                         }
-            });
+                    });
 
             gui.setItem(slot, guiItem);
         }

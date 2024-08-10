@@ -23,6 +23,34 @@ public class TournamentMenuFile extends ConfigManager {
         addDefault(ConfigPart.noComment("FillMenu.FillItem.CustomModelData", -1));
         addDefault(ConfigPart.noComment("FillMenu.FillItem.HideAttributes", true));
 
+        addOptional(ConfigPart.noComment("Decoration.item1.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item1.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item1.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item1.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item1.Slot", 0));
+        addOptional(ConfigPart.noComment("Decoration.item1.Lore", List.of()));
+
+        addOptional(ConfigPart.noComment("Decoration.item2.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item2.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item2.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item2.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item2.Slot", 8));
+        addOptional(ConfigPart.noComment("Decoration.item2.Lore", List.of()));
+
+        addOptional(ConfigPart.noComment("Decoration.item3.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item3.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item3.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item3.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item3.Slot", 36));
+        addOptional(ConfigPart.noComment("Decoration.item3.Lore", List.of()));
+
+        addOptional(ConfigPart.noComment("Decoration.item4.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item4.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item4.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item4.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item4.Slot", 44));
+        addOptional(ConfigPart.noComment("Decoration.item4.Lore", List.of()));
+
         addOptional(ConfigPart.of("Items.block_break", null, Arrays.asList(
                 "Use tournament id only.",
                 "The tournament id is the file name in the tournaments folder.",
@@ -31,7 +59,10 @@ public class TournamentMenuFile extends ConfigManager {
                 "you need to use block_break here."
         )));
         addOptional(ConfigPart.noComment("Items.block_break.Name", "&bBlock Break Tournament"));
-        addOptional(ConfigPart.noComment("Items.block_break.Material", "COBBLESTONE"));
+        addOptional(ConfigPart.of("Items.block_break.Material", "COBBLESTONE", List.of(
+                "You can use custom head values like this:",
+                "HEAD-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzg2MjJhM2Q1M2NjYzc4NDM2YzBmNjYwMDRjYjRiNzcyOWM0NjZlYTEwMDY1ZTgzOWEwNmI2Mjg4YmZkYTk4NiJ9fX0="
+        )));
         addOptional(ConfigPart.noComment("Items.block_break.Slot", 10));
         addOptional(ConfigPart.noComment("Items.block_break.HideAttributes", true));
         addOptional(ConfigPart.of("Items.block_break.CustomModelData", -1,
