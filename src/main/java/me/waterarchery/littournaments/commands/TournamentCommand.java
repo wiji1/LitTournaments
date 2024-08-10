@@ -10,6 +10,7 @@ import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.libs.gui.guis.Gui;
 import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.guis.TournamentGUI;
+import me.waterarchery.littournaments.handlers.FileHandler;
 import me.waterarchery.littournaments.handlers.LoadHandler;
 import me.waterarchery.littournaments.handlers.PlayerHandler;
 import me.waterarchery.littournaments.handlers.TournamentHandler;
@@ -110,7 +111,12 @@ public class TournamentCommand extends BaseCommand {
     @Permission("littournaments.admin.reload")
     public void reload(CommandSender sender) {
         LitLibs libs = LitTournaments.getLitLibs();
-        LoadHandler.getInstance().load();
+        TournamentHandler tournamentHandler = TournamentHandler.getInstance();
+        LoadHandler loadHandler = LoadHandler.getInstance();
+        FileHandler.load();
+
+        tournamentHandler.reloadTournaments();
+        loadHandler.loadDatabase();
         libs.getMessageHandler().sendLangMessage(sender, "FilesReloaded");
     }
 
