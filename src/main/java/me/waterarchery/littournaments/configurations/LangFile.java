@@ -27,6 +27,7 @@ public class LangFile extends ConfigManager {
         addDefault(ConfigPart.noComment("SuccessfullyLeaved", "&7You successfully leaved from this tournament!"));
         addDefault(ConfigPart.noComment("StillLoading", "&7Your data is &bstill loading &7please wait for &byour tournaments!"));
         addDefault(ConfigPart.noComment("FilesReloaded", "&bAll files reloaded successfully!"));
+        addDefault(ConfigPart.noComment("LeaderboardUpdated", "&7Leaderboard &bupdated!"));
         addDefault(ConfigPart.noComment("NotActiveTournament", "&cThis tournament is not active!"));
         addDefault(ConfigPart.noComment("TournamentEndAdmin",
                 "&7You have &bsuccessfully finished &7the tournament. It may take a &bfew seconds to &7take effect."));

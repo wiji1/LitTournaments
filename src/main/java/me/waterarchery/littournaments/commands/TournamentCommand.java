@@ -9,6 +9,7 @@ import dev.triumphteam.cmd.core.annotation.Suggestion;
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.libs.gui.guis.Gui;
 import me.waterarchery.littournaments.LitTournaments;
+import me.waterarchery.littournaments.database.Database;
 import me.waterarchery.littournaments.guis.TournamentGUI;
 import me.waterarchery.littournaments.handlers.FileHandler;
 import me.waterarchery.littournaments.handlers.LoadHandler;
@@ -132,6 +133,28 @@ public class TournamentCommand extends BaseCommand {
             if (tournament.isActive()) {
                 tournament.finishTournament();
                 libs.getMessageHandler().sendLangMessage(sender, "TournamentEndAdmin");
+            }
+            else {
+                libs.getMessageHandler().sendLangMessage(sender, "NotActiveTournament");
+            }
+        }
+        else {
+            libs.getMessageHandler().sendLangMessage(sender, "NoTournamentWithName");
+        }
+    }
+
+    @SubCommand("update")
+    @Permission("littournaments.admin.update")
+    public void update(CommandSender sender, @Suggestion("tournaments") String tournamentName) {
+        LitLibs libs = LitTournaments.getLitLibs();
+        TournamentHandler tournamentHandler = TournamentHandler.getInstance();
+        Tournament tournament = tournamentHandler.getTournament(tournamentName);
+
+        if (tournament != null) {
+            if (tournament.isActive()) {
+                Database database = LitTournaments.getDatabase();
+                database.reloadLeaderboard(tournament);
+                libs.getMessageHandler().sendLangMessage(sender, "LeaderboardUpdated");
             }
             else {
                 libs.getMessageHandler().sendLangMessage(sender, "NotActiveTournament");

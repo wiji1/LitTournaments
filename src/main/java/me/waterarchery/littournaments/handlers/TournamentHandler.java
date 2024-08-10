@@ -12,6 +12,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -120,9 +121,10 @@ public class TournamentHandler {
             for (String reward : rewards) {
                 int pos = Integer.parseInt(rawPos);
                 TournamentValue value = leaderboard.getPlayer(pos);
-                String name = value.getName();
-
-                parseTournamentReward(reward, name);
+                if (value != null) {
+                    String name = value.getName();
+                    parseTournamentReward(reward, name);
+                }
             }
         }
     }
@@ -149,7 +151,13 @@ public class TournamentHandler {
             command = command.replace("[COMMAND]", "");
             if (targetPlayer != null) command = command.replace("%player%", targetPlayer);
 
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+            String finalCommand = command;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+                }
+            }.runTask(LitTournaments.getInstance());
         }
     }
 

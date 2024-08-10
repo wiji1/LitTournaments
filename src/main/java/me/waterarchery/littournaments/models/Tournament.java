@@ -112,20 +112,25 @@ public class Tournament {
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
         tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_END");
 
+        TournamentEndEvent tournamentEndEvent = new TournamentEndEvent(tournament);
+        Bukkit.getPluginManager().callEvent(tournamentEndEvent);
+
         CompletableFuture.runAsync(database.getReloadTournamentRunnable(tournament))
                 .thenRun(() -> {
-                    TournamentEndEvent tournamentEndEvent = new TournamentEndEvent(tournament);
-                    Bukkit.getPluginManager().callEvent(tournamentEndEvent);
+                    tournamentHandler.parseRewards(tournament);
 
                     database.clearTournament(tournament);
                     getLeaderboard().clear();
-                    startFinishTask();
-
-                    tournamentHandler.parseRewards(tournament);
-
-                    TournamentStartEvent tournamentStartEvent = new TournamentStartEvent(tournament);
-                    Bukkit.getPluginManager().callEvent(tournamentStartEvent);
-                    tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_START");
+                }).thenRun(() -> {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            startFinishTask();
+                            TournamentStartEvent tournamentStartEvent = new TournamentStartEvent(tournament);
+                            Bukkit.getPluginManager().callEvent(tournamentStartEvent);
+                            tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_START");
+                        }
+                    }.runTask(LitTournaments.getInstance());
                 });
     }
 
