@@ -12,13 +12,14 @@ import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.database.Database;
 import me.waterarchery.littournaments.guis.TournamentGUI;
 import me.waterarchery.littournaments.handlers.FileHandler;
-import me.waterarchery.littournaments.handlers.LoadHandler;
 import me.waterarchery.littournaments.handlers.PlayerHandler;
 import me.waterarchery.littournaments.handlers.TournamentHandler;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentPlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 @Command(value = "littournaments", alias = {"tournaments", "tournament"})
 public class TournamentCommand extends BaseCommand {
@@ -113,11 +114,13 @@ public class TournamentCommand extends BaseCommand {
     public void reload(CommandSender sender) {
         LitLibs libs = LitTournaments.getLitLibs();
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
-        LoadHandler loadHandler = LoadHandler.getInstance();
-        FileHandler.load();
+        Database database = LitTournaments.getDatabase();
 
+        FileHandler.load();
         tournamentHandler.reloadTournaments();
-        loadHandler.loadDatabase();
+
+        List<Tournament> tournaments = tournamentHandler.getTournaments();
+        database.load(tournaments);
         libs.getMessageHandler().sendLangMessage(sender, "FilesReloaded");
     }
 
