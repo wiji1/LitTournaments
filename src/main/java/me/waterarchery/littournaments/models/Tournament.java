@@ -95,33 +95,37 @@ public class Tournament {
         LocalDateTime finishTime = getFinishTime();
         LocalDateTime now = LocalDateTime.now();
         Duration remaining = Duration.between(now, finishTime);
-        Tournament tournament = this;
         long inTicks = remaining.getSeconds() * 20L;
 
         finishTask = new BukkitRunnable() {
             @Override
             public void run() {
-                Database database = LitTournaments.getDatabase();
-                TournamentHandler tournamentHandler = TournamentHandler.getInstance();
-                tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_END");
-
-                CompletableFuture.runAsync(database.getReloadTournamentRunnable(tournament))
-                        .thenRun(() -> {
-                            TournamentEndEvent tournamentEndEvent = new TournamentEndEvent(tournament);
-                            Bukkit.getPluginManager().callEvent(tournamentEndEvent);
-
-                            database.clearTournament(tournament);
-                            getLeaderboard().clear();
-                            startFinishTask();
-
-                            tournamentHandler.parseRewards(tournament);
-
-                            TournamentStartEvent tournamentStartEvent = new TournamentStartEvent(tournament);
-                            Bukkit.getPluginManager().callEvent(tournamentStartEvent);
-                            tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_START");
-                });
+                finishTournament();
             }
         }.runTaskLaterAsynchronously(LitTournaments.getInstance(), inTicks);
+    }
+
+    public void finishTournament() {
+        Tournament tournament = this;
+        Database database = LitTournaments.getDatabase();
+        TournamentHandler tournamentHandler = TournamentHandler.getInstance();
+        tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_END");
+
+        CompletableFuture.runAsync(database.getReloadTournamentRunnable(tournament))
+                .thenRun(() -> {
+                    TournamentEndEvent tournamentEndEvent = new TournamentEndEvent(tournament);
+                    Bukkit.getPluginManager().callEvent(tournamentEndEvent);
+
+                    database.clearTournament(tournament);
+                    getLeaderboard().clear();
+                    startFinishTask();
+
+                    tournamentHandler.parseRewards(tournament);
+
+                    TournamentStartEvent tournamentStartEvent = new TournamentStartEvent(tournament);
+                    Bukkit.getPluginManager().callEvent(tournamentStartEvent);
+                    tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_START");
+                });
     }
 
     public String getIdentifier() { return identifier; }

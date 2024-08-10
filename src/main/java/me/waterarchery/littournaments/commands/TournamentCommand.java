@@ -108,10 +108,32 @@ public class TournamentCommand extends BaseCommand {
 
     @SubCommand("reload")
     @Permission("littournaments.admin.reload")
-    public void leave(CommandSender sender) {
+    public void reload(CommandSender sender) {
         LitLibs libs = LitTournaments.getLitLibs();
         LoadHandler.getInstance().load();
         libs.getMessageHandler().sendLangMessage(sender, "FilesReloaded");
+    }
+
+
+    @SubCommand("end")
+    @Permission("littournaments.admin.end")
+    public void end(CommandSender sender, @Suggestion("tournaments") String tournamentName) {
+        LitLibs libs = LitTournaments.getLitLibs();
+        TournamentHandler tournamentHandler = TournamentHandler.getInstance();
+        Tournament tournament = tournamentHandler.getTournament(tournamentName);
+
+        if (tournament != null) {
+            if (tournament.isActive()) {
+                tournament.finishTournament();
+                libs.getMessageHandler().sendLangMessage(sender, "TournamentEndAdmin");
+            }
+            else {
+                libs.getMessageHandler().sendLangMessage(sender, "NotActiveTournament");
+            }
+        }
+        else {
+            libs.getMessageHandler().sendLangMessage(sender, "NoTournamentWithName");
+        }
     }
 
 }
