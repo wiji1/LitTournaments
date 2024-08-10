@@ -5,6 +5,7 @@ import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.api.events.TournamentEndEvent;
 import me.waterarchery.littournaments.api.events.TournamentStartEvent;
 import me.waterarchery.littournaments.database.Database;
+import me.waterarchery.littournaments.handlers.PlayerHandler;
 import me.waterarchery.littournaments.handlers.TournamentHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -68,7 +69,7 @@ public class Tournament {
         LocalDate now = LocalDate.now();
 
         if (timePeriod.equalsIgnoreCase("daily")) {
-            return now.atTime(23,59);
+            return now.atTime(23,59, 59);
         }
         else if (timePeriod.equalsIgnoreCase("weekly")) {
             LocalDate endOfWeekDate = now.with(DayOfWeek.SUNDAY);
@@ -78,7 +79,7 @@ public class Tournament {
         }
         else if (timePeriod.equalsIgnoreCase("monthly")) {
             int lastDayOfMonth = now.lengthOfMonth();
-            return now.withDayOfMonth(lastDayOfMonth).atTime(23,59);
+            return now.withDayOfMonth(lastDayOfMonth).atTime(23,59, 59);
         }
 
         return null;
@@ -110,6 +111,7 @@ public class Tournament {
         Tournament tournament = this;
         Database database = LitTournaments.getDatabase();
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
+        PlayerHandler playerHandler = PlayerHandler.getInstance();
         tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_END");
 
         TournamentEndEvent tournamentEndEvent = new TournamentEndEvent(tournament);
@@ -120,18 +122,17 @@ public class Tournament {
                     tournamentHandler.parseRewards(tournament);
 
                     database.clearTournament(tournament);
+                    playerHandler.clearPlayerValues(tournament);
                     getLeaderboard().clear();
-                }).thenRun(() -> {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            startFinishTask();
-                            TournamentStartEvent tournamentStartEvent = new TournamentStartEvent(tournament);
-                            Bukkit.getPluginManager().callEvent(tournamentStartEvent);
-                            tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_START");
-                        }
-                    }.runTask(LitTournaments.getInstance());
-                });
+                }).thenRun(() -> new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        startFinishTask();
+                        TournamentStartEvent tournamentStartEvent = new TournamentStartEvent(tournament);
+                        Bukkit.getPluginManager().callEvent(tournamentStartEvent);
+                        tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_START");
+                    }
+                }.runTask(LitTournaments.getInstance()));
     }
 
     public String getIdentifier() { return identifier; }

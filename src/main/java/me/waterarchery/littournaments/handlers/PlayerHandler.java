@@ -56,6 +56,13 @@ public class PlayerHandler {
         throw new RuntimeException();
     }
 
+    public void clearPlayerValues(Tournament tournament) {
+        for (TournamentPlayer player : players) {
+            if (player.getTournamentValueMap().get(tournament) != null)
+                player.getTournamentValueMap().replace(tournament, 0L);
+        }
+    }
+
     public void initializePlayer(TournamentPlayer player, boolean isJoinNow) {
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
         List<Tournament> tournaments = tournamentHandler.getTournaments();
