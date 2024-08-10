@@ -77,7 +77,8 @@ public class Tournament {
             return LocalDateTime.of(endOfWeekDate, endOfDayTime);
         }
         else if (timePeriod.equalsIgnoreCase("monthly")) {
-            return now.withDayOfMonth(31).atTime(23,59);
+            int lastDayOfMonth = now.lengthOfMonth();
+            return now.withDayOfMonth(lastDayOfMonth).atTime(23,59);
         }
 
         return null;
