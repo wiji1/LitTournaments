@@ -35,7 +35,7 @@ JoinChecker:
 # if placed block's type is listed in Action whitelist,
 # and it is placed in the World Whitelist worlds.
 #
-# If you set whitelsit to '*' it will always return true
+# If you set whitelist to '*' it will always return true
 # unless action or world is listed in blacklist.
 Checkers:
   Action:

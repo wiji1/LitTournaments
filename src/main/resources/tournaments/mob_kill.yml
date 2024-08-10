@@ -35,7 +35,7 @@ JoinChecker:
 # if placed block's type is listed in Action whitelist,
 # and it is placed in the World Whitelist worlds.
 #
-# If you set whitelsit to '*' it will always return true
+# If you set whitelist to '*' it will always return true
 # unless action or world is listed in blacklist.
 Checkers:
   Action:
@@ -62,9 +62,9 @@ Checkers:
 # [COMMAND]
 ConditionalCommands:
   TOURNAMENT_START:
-    - '[BROADCAST] &bBlock place tournament is started! &7(/tournament)'
+    - '[BROADCAST] &bMob Kill tournament is started! &7(/tournament)'
   TOURNAMENT_END:
-    - '[BROADCAST] &bBlock place tournament is ended! New one will be started few seconds later. &7(/tournament)'
+    - '[BROADCAST] &bMob Kill tournament is ended! New one will be started few seconds later. &7(/tournament)'
 
 # You can define and delete tournament rewards
 # Available command types:
@@ -74,14 +74,14 @@ ConditionalCommands:
 # [MESSAGE]
 Rewards:
   1:
-    - '[MESSAGE] &bCongratulations! You won the block place tournament.'
+    - '[MESSAGE] &bCongratulations! You won the mob kill tournament.'
     - '[MESSAGE] &bYou will receive your rewards in a second.'
     - '[COMMAND] eco give %player% 1000'
   2:
-    - '[MESSAGE] &bCongratulations! You finished second in the block place tournament.'
+    - '[MESSAGE] &bCongratulations! You finished second in the mob kill tournament.'
     - '[MESSAGE] &bYou will receive your rewards in a second.'
     - '[COMMAND] eco give %player% 500'
   3:
-    - '[MESSAGE] &bCongratulations! You finished third in the block place tournament.'
+    - '[MESSAGE] &bCongratulations! You finished third in the mob kill tournament.'
     - '[MESSAGE] &bYou will receive your rewards in a second.'
     - '[COMMAND] eco give %player% 100'
