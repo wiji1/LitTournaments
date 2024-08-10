@@ -16,7 +16,7 @@ import java.util.List;
 public class PlayTimeListener {
 
     private static PlayTimeListener instance;
-    private BukkitTask task;
+    private final BukkitTask task;
 
     public synchronized static PlayTimeListener getInstance() {
         if (instance == null) instance = new PlayTimeListener();
