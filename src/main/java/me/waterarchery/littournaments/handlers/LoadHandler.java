@@ -73,6 +73,7 @@ public class LoadHandler {
         }
         else if (databaseType.equalsIgnoreCase("mysql")) {
             database = new MySQL(instance);
+            database.initialize();
             LitTournaments.setDatabase(database);
         }
         else {

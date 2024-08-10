@@ -19,7 +19,7 @@ public abstract class Database {
     protected Connection connection;
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(200);
 
-    public String createTableToken = "CREATE TABLE IF NOT EXISTS '{{TOURNAMENT_NAME}}' (" +
+    public String createTableToken = "CREATE TABLE IF NOT EXISTS {{TOURNAMENT_NAME}} (" +
             "`player` varchar(36) NOT NULL PRIMARY KEY," +
             "`score` int(11) NOT NULL" +
             ");";
