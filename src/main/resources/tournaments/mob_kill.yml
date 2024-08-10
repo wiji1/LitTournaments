@@ -1,6 +1,9 @@
 # If you set this to false, player will not receive any points
 Active: true
 
+# This name will be used in Discord web hooks
+CoolName: 'Mob Kill Tournament'
+
 # Available time periods:
 # DAILY
 # WEEKLY

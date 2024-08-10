@@ -24,6 +24,25 @@ public class ConfigFile extends ConfigManager {
                 "Please don't set it under 60 seconds."
         )));
 
+        addDefault(ConfigPart.of("DiscordWebhook", null, Arrays.asList(
+                "You can enable Discord web hook support on",
+                "tournament start and finish."
+        )));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Enabled", false));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Avatar", "https://i.imgur.com/VDyO5IH.jpeg"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.WebhookURL", "your_url"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Title", "\uD83C\uDFC6 %tournament% Tournament Results"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Description", "The daily %tournament% Tournament has finished!\\n"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Parts.1.Title", "\uD83E\uDD47 1st Place"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Parts.1.Description",
+                "**Player:** %player%\\n**Score:** %score%\\n**Rewards:** 1000 Game Balance\\n"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Parts.2.Title", "\uD83E\uDD48 2nd Place"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Parts.2.Description",
+                "**Player:** %player%\\n**Score:** %score%\\n**Rewards:** 500 Game Balance\\n"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Parts.3.Title", "\uD83E\uDD49 3rd Place"));
+        addDefault(ConfigPart.noComment("DiscordWebhook.Parts.3.Description",
+                "**Player:** %player%\\n**Score:** %score%\\n**Rewards:** 250 Game Balance\\n"));
+
         addDefault(ConfigPart.noComment("SoundVolume", 2));
         addDefault(ConfigPart.of("Sounds.MenuOpen", "BLOCK_ANVIL_BREAK", Collections.singletonList("# You can set sounds \"\" to disable them.")));
         addDefault(ConfigPart.noComment("Sounds.InvalidCommand", "ENTITY_ARROW_HIT"));

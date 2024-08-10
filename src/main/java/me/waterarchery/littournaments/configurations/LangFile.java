@@ -32,7 +32,7 @@ public class LangFile extends ConfigManager {
         addDefault(ConfigPart.noComment("TournamentEndAdmin",
                 "&7You have &bsuccessfully finished &7the tournament. It may take a &bfew seconds to &7take effect."));
 
-        addDefault(ConfigPart.noComment("Placeholders.None", "&7None"));
+        addDefault(ConfigPart.noComment("Placeholders.None", "None"));
         addDefault(ConfigPart.noComment("Placeholders.NotRegistered", "&7Not Registered"));
         addDefault(ConfigPart.noComment("Placeholders.RemainingTime", "&c%day% days %hour% hours and %minute% minutes"));
     }

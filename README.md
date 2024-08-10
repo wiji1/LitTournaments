@@ -47,7 +47,7 @@ Configure the plugin by editing the `config.yml` file located in the `plugins/Li
 	<dependency>
 	    <groupId>com.github.WaterArchery</groupId>
 	    <artifactId>LitTournaments</artifactId>
-	    <version>1.0.2b</version>
+	    <version>1.0.7</version>
 	    <scope>provided</scope>
 	</dependency>
  

@@ -7,6 +7,7 @@ import me.waterarchery.littournaments.api.events.TournamentStartEvent;
 import me.waterarchery.littournaments.database.Database;
 import me.waterarchery.littournaments.handlers.PlayerHandler;
 import me.waterarchery.littournaments.handlers.TournamentHandler;
+import me.waterarchery.littournaments.handlers.WebhookHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,6 +22,7 @@ public class Tournament {
     private final YamlConfiguration yamlConfiguration;
     private final boolean isActive;
     private final String timePeriod;
+    private final String coolName;
     private BukkitTask finishTask;
     private JoinChecker joinChecker;
     private ActionChecker actionChecker;
@@ -32,6 +34,8 @@ public class Tournament {
 
         this.isActive = yamlConfiguration.getBoolean("Active");
         this.timePeriod = yamlConfiguration.getString("TimePeriod");
+
+        this.coolName = yamlConfiguration.getString("CoolName", identifier);
 
         load();
     }
@@ -116,6 +120,7 @@ public class Tournament {
 
         TournamentEndEvent tournamentEndEvent = new TournamentEndEvent(tournament);
         Bukkit.getPluginManager().callEvent(tournamentEndEvent);
+        WebhookHandler.sendWebhook(tournament);
 
         CompletableFuture.runAsync(database.getReloadTournamentRunnable(tournament))
                 .thenRun(() -> {
@@ -134,6 +139,8 @@ public class Tournament {
                     }
                 }.runTask(LitTournaments.getInstance()));
     }
+
+    public String getCoolName() { return coolName; }
 
     public String getIdentifier() { return identifier; }
 
