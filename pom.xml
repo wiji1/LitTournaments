@@ -86,6 +86,11 @@
 
     <repositories>
         <repository>
+            <id>nexus</id>
+            <name>Lumine Releases</name>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
+        <repository>
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -120,6 +125,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>Mythic-Dist</artifactId>
+            <version>5.6.1</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>us.crazycrew.crazycrates</groupId>
             <artifactId>api</artifactId>

@@ -107,6 +107,7 @@ public class LoadHandler {
         instance.getServer().getPluginManager().registerEvents(new MobKillListener(), instance);
         instance.getServer().getPluginManager().registerEvents(new ItemBreakListener(), instance);
         instance.getServer().getPluginManager().registerEvents(new PlayerDamageListener(), instance);
+        PlayTimeListener.getInstance(); // Starting task
     }
 
     public void registerCommands() {
@@ -150,6 +151,10 @@ public class LoadHandler {
         if (Bukkit.getPluginManager().isPluginEnabled("Duels")) {
             logger.log("Found Duels hook.");
             instance.getServer().getPluginManager().registerEvents(new DuelsWinListener(), instance);
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")) {
+            logger.log("Found MythicMobs hook.");
+            instance.getServer().getPluginManager().registerEvents(new MythicMobsKillListener(), instance);
         }
     }
 

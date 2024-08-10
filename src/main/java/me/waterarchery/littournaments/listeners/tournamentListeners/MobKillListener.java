@@ -18,7 +18,7 @@ import java.util.List;
 public class MobKillListener implements Listener {
 
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onItemCraft(EntityDeathEvent event) {
+    public void onMobKill(EntityDeathEvent event) {
         PointHandler pointHandler = PointHandler.getInstance();
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
         Entity victim = event.getEntity();
