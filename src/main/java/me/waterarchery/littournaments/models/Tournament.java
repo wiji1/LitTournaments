@@ -108,7 +108,7 @@ public class Tournament {
             public void run() {
                 finishTournament();
             }
-        }.runTaskLaterAsynchronously(LitTournaments.getInstance(), inTicks);
+        }.runTaskLater(LitTournaments.getInstance(), inTicks);
     }
 
     public void finishTournament() {
