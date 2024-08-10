@@ -2,6 +2,7 @@ package me.waterarchery.littournaments.handlers;
 
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.logger.Logger;
+import me.waterarchery.litlibs.version.Version;
 import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.database.Database;
 import me.waterarchery.littournaments.database.MySQL;
@@ -159,26 +160,37 @@ public class LoadHandler {
     }
 
     public void saveFiles() {
-        final String path = "tournaments";
-        final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
         final LitLibs litLibs = LitTournaments.getLitLibs();
         final Logger logger = litLibs.getLogger();
         final LitTournaments instance = LitTournaments.getInstance();
 
-        try {
-            final JarFile jar = new JarFile(jarFile);
-            final Enumeration<JarEntry> entries = jar.entries();
-            while(entries.hasMoreElements()) {
-                final String name = entries.nextElement().getName();
-                if (name.startsWith(path + "/") && !name.endsWith("tournaments/")) {
-                    instance.saveResource(name, false);
-                    logger.log("Generated new tournament file: " + name);
-                }
-            }
-            jar.close();
+        if (litLibs.getVersionHandler().isServerNewerThan(Version.v1_20_4)) {
+            instance.saveResource("tournaments/block_break.yml", false);
+            instance.saveResource("tournaments/block_place.yml", false);
+            instance.saveResource("tournaments/item_break.yml", false);
+            instance.saveResource("tournaments/item_craft.yml", false);
+            instance.saveResource("tournaments/player_kill.yml", false);
+            instance.saveResource("tournaments/mob_kill.yml", false);
         }
-        catch (IOException ex) {
-            throw new RuntimeException(ex);
+        else {
+            final String path = "tournaments";
+            final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+
+            try {
+                final JarFile jar = new JarFile(jarFile);
+                final Enumeration<JarEntry> entries = jar.entries();
+                while(entries.hasMoreElements()) {
+                    final String name = entries.nextElement().getName();
+                    if (name.startsWith(path + "/") && !name.endsWith("tournaments/")) {
+                        instance.saveResource(name, false);
+                        logger.log("Generated new tournament file: " + name);
+                    }
+                }
+                jar.close();
+            }
+            catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
