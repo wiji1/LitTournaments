@@ -55,4 +55,8 @@ public class TournamentLeaderboard {
         leaderboard.clear();
     }
 
+    public HashMap<Integer, TournamentValue> getLeaderboard() {
+        return leaderboard;
+    }
+
 }

@@ -87,10 +87,16 @@ public class TournamentMenuFile extends ConfigManager {
                 "&b| &8   #8 &f%leader_name_8% &8(&8%leader_score_formatted_8%&8)",
                 "&b| &8   #9 &f%leader_name_9% &8(&8%leader_score_formatted_9%&8)",
                 "&b| &8   #10 &f%leader_name_10% &8(&8%leader_score_formatted_10%&8)",
+                "&b|",
+                "&b| &7Leaderboard refreshes",
+                "&b| &7itself every 1 minute",
                 "",
                 "&b&lREMAINING TIME",
                 "&b| &7There is &c%remaining_time%",
-                "&b| &7to this tournament finish."
+                "&b| &7to this tournament finish.",
+                "&b",
+                "&b| &aLeft Click To Join",
+                "&b| &aRight Click To View Leaderboard"
         )));
 
         addOptional(ConfigPart.noComment("Items.block_place.Name", "&bBlock Place Tournament"));
@@ -119,10 +125,16 @@ public class TournamentMenuFile extends ConfigManager {
                 "&b| &8   #8 &f%leader_name_8% &8(&8%leader_score_formatted_8%&8)",
                 "&b| &8   #9 &f%leader_name_9% &8(&8%leader_score_formatted_9%&8)",
                 "&b| &8   #10 &f%leader_name_10% &8(&8%leader_score_formatted_10%&8)",
+                "&b|",
+                "&b| &7Leaderboard refreshes",
+                "&b| &7itself every 1 minute",
                 "",
                 "&b&lREMAINING TIME",
                 "&b| &7There is &c%remaining_time%",
-                "&b| &7to this tournament finish."
+                "&b| &7to this tournament finish.",
+                "&b",
+                "&b| &aLeft Click To Join",
+                "&b| &aRight Click To View Leaderboard"
         )));
 
         addOptional(ConfigPart.noComment("Items.item_craft.Name", "&bCraft Item Tournament"));
@@ -151,10 +163,16 @@ public class TournamentMenuFile extends ConfigManager {
                 "&b| &8   #8 &f%leader_name_8% &8(&8%leader_score_formatted_8%&8)",
                 "&b| &8   #9 &f%leader_name_9% &8(&8%leader_score_formatted_9%&8)",
                 "&b| &8   #10 &f%leader_name_10% &8(&8%leader_score_formatted_10%&8)",
+                "&b|",
+                "&b| &7Leaderboard refreshes",
+                "&b| &7itself every 1 minute",
                 "",
                 "&b&lREMAINING TIME",
                 "&b| &7There is &c%remaining_time%",
-                "&b| &7to this tournament finish."
+                "&b| &7to this tournament finish.",
+                "&b",
+                "&b| &aLeft Click To Join",
+                "&b| &aRight Click To View Leaderboard"
         )));
 
         addOptional(ConfigPart.noComment("Items.mob_kill.Name", "&bMob Kill Tournament"));
@@ -183,10 +201,16 @@ public class TournamentMenuFile extends ConfigManager {
                 "&b| &8   #8 &f%leader_name_8% &8(&8%leader_score_formatted_8%&8)",
                 "&b| &8   #9 &f%leader_name_9% &8(&8%leader_score_formatted_9%&8)",
                 "&b| &8   #10 &f%leader_name_10% &8(&8%leader_score_formatted_10%&8)",
+                "&b|",
+                "&b| &7Leaderboard refreshes",
+                "&b| &7itself every 1 minute",
                 "",
                 "&b&lREMAINING TIME",
                 "&b| &7There is &c%remaining_time%",
-                "&b| &7to this tournament finish."
+                "&b| &7to this tournament finish.",
+                "&b",
+                "&b| &aLeft Click To Join",
+                "&b| &aRight Click To View Leaderboard"
         )));
 
         addOptional(ConfigPart.noComment("Items.item_break.Name", "&bItem Break Tournament"));
@@ -215,10 +239,16 @@ public class TournamentMenuFile extends ConfigManager {
                 "&b| &8   #8 &f%leader_name_8% &8(&8%leader_score_formatted_8%&8)",
                 "&b| &8   #9 &f%leader_name_9% &8(&8%leader_score_formatted_9%&8)",
                 "&b| &8   #10 &f%leader_name_10% &8(&8%leader_score_formatted_10%&8)",
+                "&b|",
+                "&b| &7Leaderboard refreshes",
+                "&b| &7itself every 1 minute",
                 "",
                 "&b&lREMAINING TIME",
                 "&b| &7There is &c%remaining_time%",
-                "&b| &7to this tournament finish."
+                "&b| &7to this tournament finish.",
+                "&b",
+                "&b| &aLeft Click To Join",
+                "&b| &aRight Click To View Leaderboard"
         )));
 
         addOptional(ConfigPart.noComment("Items.player_kill.Name", "&bPlayer Kill Tournament"));
@@ -247,10 +277,16 @@ public class TournamentMenuFile extends ConfigManager {
                 "&b| &8   #8 &f%leader_name_8% &8(&8%leader_score_formatted_8%&8)",
                 "&b| &8   #9 &f%leader_name_9% &8(&8%leader_score_formatted_9%&8)",
                 "&b| &8   #10 &f%leader_name_10% &8(&8%leader_score_formatted_10%&8)",
+                "&b|",
+                "&b| &7Leaderboard refreshes",
+                "&b| &7itself every 1 minute",
                 "",
                 "&b&lREMAINING TIME",
                 "&b| &7There is &c%remaining_time%",
-                "&b| &7to this tournament finish."
+                "&b| &7to this tournament finish.",
+                "&b",
+                "&b| &aLeft Click To Join",
+                "&b| &aRight Click To View Leaderboard"
         )));
     }
 

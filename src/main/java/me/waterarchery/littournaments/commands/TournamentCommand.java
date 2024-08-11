@@ -7,9 +7,10 @@ import dev.triumphteam.cmd.core.annotation.Default;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
 import me.waterarchery.litlibs.LitLibs;
-import me.waterarchery.litlibs.libs.gui.guis.Gui;
+import me.waterarchery.litlibs.libs.gui.guis.BaseGui;
 import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.database.Database;
+import me.waterarchery.littournaments.guis.LeaderboardGUI;
 import me.waterarchery.littournaments.guis.TournamentGUI;
 import me.waterarchery.littournaments.handlers.FileHandler;
 import me.waterarchery.littournaments.handlers.PlayerHandler;
@@ -29,7 +30,7 @@ public class TournamentCommand extends BaseCommand {
         LitLibs libs = LitTournaments.getLitLibs();
 
         if (sender instanceof Player player) {
-            Gui gui = TournamentGUI.of(player);
+            BaseGui gui = TournamentGUI.of(player);
             gui.open(player);
         }
         else {
@@ -99,6 +100,29 @@ public class TournamentCommand extends BaseCommand {
                 else {
                     libs.getMessageHandler().sendLangMessage(sender, "JoinFirst");
                 }
+            }
+            else {
+                libs.getMessageHandler().sendLangMessage(sender, "NoTournamentWithName");
+            }
+        }
+        else {
+            libs.getMessageHandler().sendLangMessage(sender, "InGameOnly");
+        }
+    }
+
+    @SubCommand("leaderboard")
+    public void leaderboard(CommandSender sender, @Suggestion("tournaments") String tournamentName) {
+        LitLibs libs = LitTournaments.getLitLibs();
+
+        if (sender instanceof Player player) {
+            TournamentHandler tournamentHandler = TournamentHandler.getInstance();
+            PlayerHandler playerHandler = PlayerHandler.getInstance();
+            TournamentPlayer tournamentPlayer = playerHandler.getPlayer(player.getUniqueId());
+            Tournament tournament = tournamentHandler.getTournament(tournamentName);
+
+            if (tournament != null) {
+                BaseGui gui = LeaderboardGUI.of(player, tournament);
+                gui.open(player);
             }
             else {
                 libs.getMessageHandler().sendLangMessage(sender, "NoTournamentWithName");

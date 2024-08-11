@@ -3,6 +3,9 @@ package me.waterarchery.littournaments.handlers;
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.configuration.ConfigManager;
 import me.waterarchery.litlibs.handlers.MessageHandler;
+import me.waterarchery.litlibs.libs.gui.builder.item.ItemBuilder;
+import me.waterarchery.litlibs.libs.gui.guis.BaseGui;
+import me.waterarchery.litlibs.libs.gui.guis.GuiItem;
 import me.waterarchery.litlibs.libs.skullcreator.SkullCreator;
 import me.waterarchery.litlibs.libs.xseries.XMaterial;
 import me.waterarchery.littournaments.LitTournaments;
@@ -11,9 +14,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class GUIHandler {
 
@@ -42,7 +48,7 @@ public class GUIHandler {
         return size / 9;
     }
 
-    public ItemStack craftItemStack(ConfigManager menu, String itemName, String path) {
+    public ItemStack craftItemStack(ConfigManager menu, String itemName, String path, @Nullable UUID player) {
         LitLibs libs = LitTournaments.getLitLibs();
         FileConfiguration yml = menu.getYml();
         MessageHandler mesHandler = libs.getMessageHandler();
@@ -54,13 +60,14 @@ public class GUIHandler {
         List<String> lore = new ArrayList<>();
         int customModelData = yml.getInt(path + "." + itemName + ".CustomModelData", -1);
 
-        ItemStack itemStack = parseMaterial(materialName);
+        ItemStack itemStack = parseMaterial(materialName, player);
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         for (String part : rawLore) {
             lore.add(mesHandler.updateColors(part));
         }
 
+        assert itemMeta != null;
         itemMeta.setDisplayName(mesHandler.updateColors(name));
         itemMeta.setLore(lore);
         if (hideAttributes) itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -71,10 +78,32 @@ public class GUIHandler {
         return itemStack;
     }
 
-    private ItemStack parseMaterial(String material) {
+    public void fillGUI(FileConfiguration yml, BaseGui gui, ConfigManager manager) {
+        // Filling GUI
+        if (yml.getBoolean("FillMenu.Enabled", true)) {
+            ItemStack itemStack = craftItemStack(manager, "FillItem", "FillMenu", null);
+            GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
+            gui.getFiller().fill(guiItem);
+        }
+    }
+
+    public void decorateGUI(FileConfiguration yml, BaseGui gui, ConfigManager manager) {
+        for (String decorationItem : Objects.requireNonNull(yml.getConfigurationSection("Decoration")).getKeys(false)) {
+            ItemStack itemStack = craftItemStack(manager, decorationItem, "Decoration", null);
+            int slot = yml.getInt("Decoration." + decorationItem + ".Slot");
+            GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
+
+            gui.setItem(slot, guiItem);
+        }
+    }
+
+    private ItemStack parseMaterial(String material, @Nullable UUID uuid) {
         if (material.contains("HEAD-")) {
             String headBase = material.replace("HEAD-", "");
             return SkullCreator.itemFromBase64(headBase);
+        }
+        else if (material.equalsIgnoreCase("PLAYER") && uuid != null) {
+            return SkullCreator.itemFromUuid(uuid);
         }
         else {
             return XMaterial.matchXMaterial(material)

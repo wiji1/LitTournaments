@@ -3,6 +3,7 @@ package me.waterarchery.littournaments.guis;
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.configuration.ConfigManager;
 import me.waterarchery.litlibs.libs.gui.builder.item.ItemBuilder;
+import me.waterarchery.litlibs.libs.gui.guis.BaseGui;
 import me.waterarchery.litlibs.libs.gui.guis.Gui;
 import me.waterarchery.litlibs.libs.gui.guis.GuiItem;
 import me.waterarchery.littournaments.LitTournaments;
@@ -12,6 +13,7 @@ import me.waterarchery.littournaments.models.TournamentPlayer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -25,7 +27,7 @@ public class TournamentGUI {
 
     private static final NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
 
-    public static Gui of(Player player) {
+    public static BaseGui of(Player player) {
         GUIHandler guiHandler = GUIHandler.getInstance();
         ConfigManager manager = FileHandler.getTournamentMenu();
         LitLibs libs = LitTournaments.getLitLibs();
@@ -44,20 +46,10 @@ public class TournamentGUI {
                 .create();
 
         // Filling GUI
-        if (yml.getBoolean("FillMenu.Enabled", true)) {
-            ItemStack itemStack = guiHandler.craftItemStack(manager, "FillItem", "FillMenu");
-            GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
-            gui.getFiller().fill(guiItem);
-        }
+        guiHandler.fillGUI(yml, gui, manager);
 
         // Adding decoration items into GUI
-        for (String decorationItem : Objects.requireNonNull(yml.getConfigurationSection("Decoration")).getKeys(false)) {
-            ItemStack itemStack = guiHandler.craftItemStack(manager, decorationItem, "Decoration");
-            int slot = yml.getInt("Decoration." + decorationItem + ".Slot");
-            GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
-
-            gui.setItem(slot, guiItem);
-        }
+        guiHandler.decorateGUI(yml, gui, manager);
 
         // Adding tournament items into GUI
         for (String tournamentName : Objects.requireNonNull(yml.getConfigurationSection("Items")).getKeys(false)) {
@@ -69,7 +61,7 @@ public class TournamentGUI {
                 continue;
             }
 
-            ItemStack itemStack = guiHandler.craftItemStack(manager, tournamentName, "Items");
+            ItemStack itemStack = guiHandler.craftItemStack(manager, tournamentName, "Items", null);
             int slot = yml.getInt("Items." + tournamentName + ".Slot");
             parseLore(itemStack, tournamentPlayer, tournament);
 
@@ -78,15 +70,21 @@ public class TournamentGUI {
             GuiItem guiItem = ItemBuilder.from(itemStack)
                     .glow(glowItemIfJoined && tournamentPlayer.isRegistered(tournament))
                     .asGuiItem(event -> {
-                        if (tournamentPlayer.isRegistered(tournament)) {
-                            libs.getMessageHandler().sendLangMessage(player, "AlreadyJoined");
-                            libs.getSoundHandler().sendSound(player, "Sounds.AlreadyJoined");
+                        if (event.getClick() == ClickType.RIGHT) {
+                            BaseGui leaderboard = LeaderboardGUI.of(player, tournament);
+                            leaderboard.open(player);
                         }
-                        else {
-                            tournamentPlayer.join(tournament);
-                            libs.getSoundHandler().sendSound(player, "Sounds.SuccessfullyJoined");
-                            libs.getMessageHandler().sendLangMessage(player, "SuccessfullyRegistered");
-                            gui.update();
+                        else  {
+                            if (tournamentPlayer.isRegistered(tournament)) {
+                                libs.getMessageHandler().sendLangMessage(player, "AlreadyJoined");
+                                libs.getSoundHandler().sendSound(player, "Sounds.AlreadyJoined");
+                            }
+                            else {
+                                tournamentPlayer.join(tournament);
+                                libs.getSoundHandler().sendSound(player, "Sounds.SuccessfullyJoined");
+                                libs.getMessageHandler().sendLangMessage(player, "SuccessfullyRegistered");
+                                gui.update();
+                            }
                         }
                     });
 
