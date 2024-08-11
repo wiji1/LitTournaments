@@ -159,8 +159,8 @@ public class TournamentCommand extends BaseCommand {
 
         if (tournament != null) {
             if (tournament.isActive()) {
-                tournament.finishTournament();
                 libs.getMessageHandler().sendLangMessage(sender, "TournamentEndAdmin");
+                tournament.finishTournament();
             }
             else {
                 libs.getMessageHandler().sendLangMessage(sender, "NotActiveTournament");
