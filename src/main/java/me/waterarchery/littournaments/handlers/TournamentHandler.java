@@ -143,14 +143,14 @@ public class TournamentHandler {
 
         if (command.startsWith("[MESSAGE]") && targetPlayer != null) {
             Player player = Bukkit.getPlayer(targetPlayer);
-            if (player != null) libs.getMessageHandler().sendMessage(player, command.replace("[MESSAGE]", ""));
+            if (player != null) libs.getMessageHandler().sendMessage(player, command.replace("[MESSAGE] ", ""));
         }
         else if (command.startsWith("[BROADCAST]")) {
-            String message = libs.getMessageHandler().updateColors(command.replace("[BROADCAST]", ""));
+            String message = libs.getMessageHandler().updateColors(command.replace("[BROADCAST] ", ""));
             Bukkit.broadcastMessage(message);
         }
         else if (command.startsWith("[COMMAND]")) {
-            command = command.replace("[COMMAND]", "");
+            command = command.replace("[COMMAND] ", "");
             if (targetPlayer != null) command = command.replace("%player%", targetPlayer);
 
             String finalCommand = command;
