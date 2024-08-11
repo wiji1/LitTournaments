@@ -110,6 +110,7 @@ public class TournamentCommand extends BaseCommand {
         }
     }
 
+    @Permission("littournaments.player.leaderboard")
     @SubCommand("leaderboard")
     public void leaderboard(CommandSender sender, @Suggestion("tournaments") String tournamentName) {
         LitLibs libs = LitTournaments.getLitLibs();
