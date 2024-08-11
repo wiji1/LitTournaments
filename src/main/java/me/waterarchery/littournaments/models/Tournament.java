@@ -10,10 +10,12 @@ import me.waterarchery.littournaments.handlers.TournamentHandler;
 import me.waterarchery.littournaments.handlers.WebhookHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.*;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class Tournament {

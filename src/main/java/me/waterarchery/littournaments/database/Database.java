@@ -52,13 +52,17 @@ public abstract class Database {
 
     public void addPoint(UUID uuid, Tournament tournament, long point) {
         Runnable runnable = () -> {
-            String query = String.format("UPDATE %s SET score = score + ? WHERE player = ?", tournament.getIdentifier());
+            String query = String.format("INSERT INTO %s (player, score) VALUES(?, ?) ON CONFLICT(player)" +
+                    " DO UPDATE SET score=score + ? WHERE player = ?;", tournament.getIdentifier());
 
             try {
                 Connection conn = getSQLConnection();
                 PreparedStatement stmt = conn.prepareStatement(query);
-                stmt.setLong(1, point);
-                stmt.setString(2, uuid.toString());
+
+                stmt.setString(1, uuid.toString());
+                stmt.setLong(2, point);
+                stmt.setLong(3, point);
+                stmt.setString(4, uuid.toString());
 
                 stmt.executeUpdate();
             }

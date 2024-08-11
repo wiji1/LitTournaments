@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class TournamentHandler {
 
@@ -64,6 +65,7 @@ public class TournamentHandler {
         logger.log("Loading tournament: " + identifier);
 
         String classType = yml.getString("Objective");
+        assert classType != null;
         classType = classType.replace("_", "");
 
         for (Class<Tournament> tournamentClass : tournamentClasses) {
@@ -115,7 +117,7 @@ public class TournamentHandler {
         YamlConfiguration yml = tournament.getYamlConfiguration();
         TournamentLeaderboard leaderboard = tournament.getLeaderboard();
 
-        for (String rawPos : yml.getConfigurationSection("Rewards").getKeys(false)) {
+        for (String rawPos : Objects.requireNonNull(yml.getConfigurationSection("Rewards")).getKeys(false)) {
             List<String> rewards = yml.getStringList("Rewards." + rawPos);
 
             for (String reward : rewards) {
@@ -132,7 +134,7 @@ public class TournamentHandler {
     public void parseConditionalCommand(Tournament tournament, String condition) {
         YamlConfiguration yml = tournament.getYamlConfiguration();
 
-        List<String> commands = yml.getStringList("Rewards.ConditionalCommands." + condition);
+        List<String> commands = yml.getStringList("ConditionalCommands." + condition);
         commands.forEach(command -> parseTournamentReward(command, null));
     }
 
