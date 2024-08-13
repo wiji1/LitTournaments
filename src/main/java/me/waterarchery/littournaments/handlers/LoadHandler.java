@@ -28,6 +28,7 @@ import java.util.jar.JarFile;
 
 public class LoadHandler {
 
+    private PlaceholderAPIHook placeholderAPIHook;
     private static LoadHandler instance;
 
     public static LoadHandler getInstance() {
@@ -131,7 +132,7 @@ public class LoadHandler {
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             logger.log("Found PlaceHolderAPI hook");
-            PlaceholderAPIHook placeholderAPIHook = new PlaceholderAPIHook();
+            placeholderAPIHook = new PlaceholderAPIHook();
             placeholderAPIHook.register();
         }
 
@@ -217,6 +218,10 @@ public class LoadHandler {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    public PlaceholderAPIHook getPlaceholderAPIHook() {
+        return placeholderAPIHook;
     }
 
 }

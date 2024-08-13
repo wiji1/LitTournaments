@@ -117,13 +117,10 @@ public class TournamentCommand extends BaseCommand {
 
         if (sender instanceof Player player) {
             TournamentHandler tournamentHandler = TournamentHandler.getInstance();
-            PlayerHandler playerHandler = PlayerHandler.getInstance();
-            TournamentPlayer tournamentPlayer = playerHandler.getPlayer(player.getUniqueId());
             Tournament tournament = tournamentHandler.getTournament(tournamentName);
 
             if (tournament != null) {
-                BaseGui gui = LeaderboardGUI.of(player, tournament);
-                gui.open(player);
+                LeaderboardGUI.openMenu(player, tournament, true);
             }
             else {
                 libs.getMessageHandler().sendLangMessage(sender, "NoTournamentWithName");

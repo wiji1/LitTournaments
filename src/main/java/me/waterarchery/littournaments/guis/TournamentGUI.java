@@ -71,8 +71,8 @@ public class TournamentGUI {
                     .glow(glowItemIfJoined && tournamentPlayer.isRegistered(tournament))
                     .asGuiItem(event -> {
                         if (event.getClick() == ClickType.RIGHT) {
-                            BaseGui leaderboard = LeaderboardGUI.of(player, tournament);
-                            leaderboard.open(player);
+                            player.closeInventory();
+                            LeaderboardGUI.openMenu(player, tournament, true);
                         }
                         else  {
                             if (tournamentPlayer.isRegistered(tournament)) {

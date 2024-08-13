@@ -5,6 +5,7 @@ import me.waterarchery.litlibs.logger.Logger;
 import me.waterarchery.littournaments.database.Database;
 import me.waterarchery.littournaments.handlers.CommandHandler;
 import me.waterarchery.littournaments.handlers.LoadHandler;
+import me.waterarchery.littournaments.hooks.PlaceholderAPIHook;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LitTournaments extends JavaPlugin {
@@ -29,6 +30,10 @@ public final class LitTournaments extends JavaPlugin {
         commandHandler.unRegisterCommands();
 
         database.shutdown();
+
+        LoadHandler loadHandler = LoadHandler.getInstance();
+        PlaceholderAPIHook placeholderAPIHook = loadHandler.getPlaceholderAPIHook();
+        if (placeholderAPIHook != null) placeholderAPIHook.unRegister();
 
         logger.log("Good bye :(");
     }
