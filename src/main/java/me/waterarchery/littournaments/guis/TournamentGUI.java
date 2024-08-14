@@ -38,6 +38,7 @@ public class TournamentGUI {
 
         String title = guiHandler.getMenuTitle(manager);
         int size = guiHandler.getMenuSize(manager);
+        boolean disableRightClick = LitTournaments.getInstance().getConfig().getBoolean("DisableLeaderboardWithRightClick", false);
 
         Gui gui = Gui.gui()
                 .title(Component.text(title))
@@ -54,7 +55,6 @@ public class TournamentGUI {
         // Adding tournament items into GUI
         for (String tournamentName : Objects.requireNonNull(yml.getConfigurationSection("Items")).getKeys(false)) {
             Tournament tournament = tournamentHandler.getTournament(tournamentName);
-
             if (tournament == null) {
                 libs.getLogger().error(String.format(
                         "You used %s in the tournament menu but there is no tournament that has its id", tournamentName));
@@ -70,7 +70,7 @@ public class TournamentGUI {
             GuiItem guiItem = ItemBuilder.from(itemStack)
                     .glow(glowItemIfJoined && tournamentPlayer.isRegistered(tournament))
                     .asGuiItem(event -> {
-                        if (event.getClick() == ClickType.RIGHT) {
+                        if (event.getClick() == ClickType.RIGHT && !disableRightClick) {
                             player.closeInventory();
                             LeaderboardGUI.openMenu(player, tournament, true);
                         }

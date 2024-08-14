@@ -23,6 +23,10 @@ public class ConfigFile extends ConfigManager {
                 "Its in seconds.",
                 "Please don't set it under 60 seconds."
         )));
+        addDefault(ConfigPart.of("DisableLeaderboardWithRightClick", false, Arrays.asList(
+                "If you set this to true, it will disable leaderboard menu opening",
+                "with right clicking tournament item in /tournament gui."
+        )));
 
         addDefault(ConfigPart.of("DiscordWebhook", null, Arrays.asList(
                 "You can enable Discord web hook support on",
