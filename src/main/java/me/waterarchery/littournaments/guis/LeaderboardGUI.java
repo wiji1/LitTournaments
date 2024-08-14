@@ -18,7 +18,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,56 +35,53 @@ public class LeaderboardGUI {
 
         if (sendMessage) libs.getMessageHandler().sendLangMessage(player, "LoadingLeaderboard");
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                String title = guiHandler.getMenuTitle(manager).replace("%tournament%", tournament.getCoolName());
-                int size = guiHandler.getMenuSize(manager);
+        Bukkit.getScheduler().runTaskAsynchronously(LitTournaments.getInstance(), () -> {
+            String title = guiHandler.getMenuTitle(manager).replace("%tournament%", tournament.getCoolName());
+            int size = guiHandler.getMenuSize(manager);
 
-                PaginatedGui gui = Gui.paginated()
-                        .title(Component.text(title))
-                        .rows(size)
-                        .disableAllInteractions()
-                        .create();
+            PaginatedGui gui = Gui.paginated()
+                    .title(Component.text(title))
+                    .rows(size)
+                    .disableAllInteractions()
+                    .create();
 
-                ItemStack nextPageItem = guiHandler.craftItemStack(manager, "nextPage", "Items", null);
-                ItemStack previousPageItem = guiHandler.craftItemStack(manager, "previousPage", "Items", null);
-                int nextPageSlot = yml.getInt("Items.nextPage.Slot");
-                int previousPageSlot = yml.getInt("Items.previousPage.Slot");
+            ItemStack nextPageItem = guiHandler.craftItemStack(manager, "nextPage", "Items", null);
+            ItemStack previousPageItem = guiHandler.craftItemStack(manager, "previousPage", "Items", null);
+            int nextPageSlot = yml.getInt("Items.nextPage.Slot");
+            int previousPageSlot = yml.getInt("Items.previousPage.Slot");
 
-                gui.setItem(nextPageSlot, ItemBuilder.from(nextPageItem).asGuiItem(event -> gui.next()));
-                gui.setItem(previousPageSlot, ItemBuilder.from(previousPageItem).asGuiItem(event -> gui.previous()));
+            gui.setItem(nextPageSlot, ItemBuilder.from(nextPageItem).asGuiItem(event -> gui.next()));
+            gui.setItem(previousPageSlot, ItemBuilder.from(previousPageItem).asGuiItem(event -> gui.previous()));
 
-                // Adding decoration items into GUI
-                guiHandler.decorateGUI(yml, gui, manager);
+            // Adding decoration items into GUI
+            guiHandler.decorateGUI(yml, gui, manager);
 
-                // Adding player heads into GUI
-                ItemStack ownPlayer = guiHandler.craftItemStack(manager, "ownPlayer", "Items", player.getUniqueId());
-                int ownPlayerSlot = yml.getInt("Items.ownPlayer.Slot");
-                TournamentPlayer tournamentPlayer = playerHandler.getPlayer(player.getUniqueId());
-                String score = valueHandler.getPlayerScore(tournamentPlayer, tournament);
-                String pos = valueHandler.getPlayerPosition(tournamentPlayer, tournament);
+            // Adding player heads into GUI
+            ItemStack ownPlayer = guiHandler.craftItemStack(manager, "ownPlayer", "Items", player.getUniqueId());
+            int ownPlayerSlot = yml.getInt("Items.ownPlayer.Slot");
+            TournamentPlayer tournamentPlayer = playerHandler.getPlayer(player.getUniqueId());
+            String score = valueHandler.getPlayerScore(tournamentPlayer, tournament);
+            String pos = valueHandler.getPlayerPosition(tournamentPlayer, tournament);
 
-                parseItemLore(ownPlayer, player, score, pos);
-                GuiItem playerItem = ItemBuilder.from(ownPlayer).asGuiItem();
-                gui.setItem(ownPlayerSlot, playerItem);
+            parseItemLore(ownPlayer, player, score, pos);
+            GuiItem playerItem = ItemBuilder.from(ownPlayer).asGuiItem();
+            gui.setItem(ownPlayerSlot, playerItem);
 
-                // Adding other players
-                int i = 0;
-                for (TournamentValue value : tournament.getLeaderboard().getLeaderboard().values()) {
-                    i++;
-                    ItemStack itemStack = guiHandler.craftItemStack(manager, "playerTemplate", "Items", value.getUUID());
-                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(value.getUUID());
+            // Adding other players
+            int i = 0;
+            for (TournamentValue value : tournament.getLeaderboard().getLeaderboard().values()) {
+                i++;
+                ItemStack itemStack = guiHandler.craftItemStack(manager, "playerTemplate", "Items", value.getUUID());
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(value.getUUID());
 
-                    parseItemLore(itemStack, offlinePlayer, String.valueOf(value.getValue()), String.valueOf(i));
+                parseItemLore(itemStack, offlinePlayer, String.valueOf(value.getValue()), String.valueOf(i));
 
-                    GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
-                    gui.addItem(guiItem);
-                }
-
-                Bukkit.getScheduler().runTask(LitTournaments.getInstance(), () -> gui.open(player));
+                GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
+                gui.addItem(guiItem);
             }
-        }.runTaskAsynchronously(LitTournaments.getInstance());
+
+            Bukkit.getScheduler().runTask(LitTournaments.getInstance(), () -> gui.open(player));
+        });
     }
 
     private static void parseItemLore(ItemStack itemStack, OfflinePlayer player, String value, String pos) {
