@@ -69,8 +69,11 @@ public class LeaderboardGUI {
             gui.setItem(ownPlayerSlot, playerItem);
 
             // Adding other players
+            int limit = LitTournaments.getInstance().getConfig().getInt("LeaderboardLimit");
             int i = 0;
             for (TournamentValue value : tournament.getLeaderboard().getLeaderboard().values()) {
+                if (i == limit) break;
+
                 i++;
                 ItemStack itemStack = guiHandler.craftItemStack(manager, "playerTemplate", "Items", value.getUUID());
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(value.getUUID());

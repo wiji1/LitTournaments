@@ -6,6 +6,7 @@ import me.waterarchery.litlibs.configuration.ConfigPart;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class ConfigFile extends ConfigManager {
 
@@ -22,6 +23,9 @@ public class ConfigFile extends ConfigManager {
         addDefault(ConfigPart.of("LeaderboardRefresh", 60, Arrays.asList(
                 "Its in seconds.",
                 "Please don't set it under 60 seconds."
+        )));
+        addDefault(ConfigPart.of("LeaderboardLimit", 32, List.of(
+                "Amount of players that listed in tournament leaderboard"
         )));
         addDefault(ConfigPart.of("WaitTimeBetweenTournaments", 60, Arrays.asList(
                 "Its in seconds.",
