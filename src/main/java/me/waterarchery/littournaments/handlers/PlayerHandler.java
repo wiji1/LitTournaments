@@ -88,7 +88,7 @@ public class PlayerHandler {
                     UUID uuid = player.getUUID();
 
                     if (joinChecker.isAutoJoinEnabled() && joinChecker.canJoin(uuid)) {
-                        if (bukkitPlayer != null)
+                        if (joinChecker.isMessageOnAutoJoin() && bukkitPlayer != null)
                             libs.getMessageHandler().sendLangMessage(bukkitPlayer, "SuccessfullyRegisteredOnJoin");
                         player.join(tournament);
                     }

@@ -15,6 +15,7 @@ import me.waterarchery.littournaments.guis.TournamentGUI;
 import me.waterarchery.littournaments.handlers.FileHandler;
 import me.waterarchery.littournaments.handlers.PlayerHandler;
 import me.waterarchery.littournaments.handlers.TournamentHandler;
+import me.waterarchery.littournaments.models.JoinChecker;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentPlayer;
 import org.bukkit.command.CommandSender;
@@ -56,7 +57,8 @@ public class TournamentCommand extends BaseCommand {
             }
 
             if (tournament != null) {
-                if (!tournamentPlayer.isRegistered(tournament)) {
+                JoinChecker joinChecker = tournament.getJoinChecker();
+                if (!tournamentPlayer.isRegistered(tournament) && joinChecker.canJoin(player.getUniqueId())) {
                     tournamentPlayer.join(tournament);
                     libs.getMessageHandler().sendLangMessage(sender, "SuccessfullyRegistered");
                     libs.getSoundHandler().sendSound(player, "Sounds.SuccessfullyJoined");
