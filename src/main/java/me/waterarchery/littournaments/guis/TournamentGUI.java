@@ -14,6 +14,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -63,11 +64,13 @@ public class TournamentGUI {
 
             ItemStack itemStack = guiHandler.craftItemStack(manager, tournamentName, "Items", null);
             int slot = yml.getInt("Items." + tournamentName + ".Slot");
+            boolean hideAttributes = yml.getBoolean("Items." + tournamentName + ".HideAttributes");
             parseLore(itemStack, tournamentPlayer, tournament);
 
             boolean glowItemIfJoined = yml.getBoolean("GlowItemIfJoined", true);
 
             GuiItem guiItem = ItemBuilder.from(itemStack)
+                    .flags(ItemFlag.HIDE_ATTRIBUTES)
                     .glow(glowItemIfJoined && tournamentPlayer.isRegistered(tournament))
                     .asGuiItem(event -> {
                         if (event.getClick() == ClickType.RIGHT && !disableRightClick) {

@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -76,7 +77,9 @@ public class LeaderboardGUI {
 
                 parseItemLore(itemStack, offlinePlayer, String.valueOf(value.getValue()), String.valueOf(i));
 
-                GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
+                GuiItem guiItem = ItemBuilder.from(itemStack)
+                        .flags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS)
+                        .asGuiItem();
                 gui.addItem(guiItem);
             }
 
