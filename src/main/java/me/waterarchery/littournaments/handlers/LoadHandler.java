@@ -112,6 +112,7 @@ public class LoadHandler {
         instance.getServer().getPluginManager().registerEvents(new MobKillListener(), instance);
         instance.getServer().getPluginManager().registerEvents(new ItemBreakListener(), instance);
         instance.getServer().getPluginManager().registerEvents(new PlayerDamageListener(), instance);
+        instance.getServer().getPluginManager().registerEvents(new PlayerFishListener(), instance);
         PlayTimeListener.getInstance(); // Starting task
     }
 
