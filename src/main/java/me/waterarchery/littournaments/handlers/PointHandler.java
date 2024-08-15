@@ -3,6 +3,7 @@ package me.waterarchery.littournaments.handlers;
 
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.littournaments.LitTournaments;
+import me.waterarchery.littournaments.api.events.PointAddEvent;
 import me.waterarchery.littournaments.database.Database;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentPlayer;
@@ -25,11 +26,11 @@ public class PointHandler {
 
     public void addPoint(UUID uuid, Tournament tournament, String worldName, String actionName, int point) {
         if (tournament.checkWorldEnabled(worldName) && tournament.checkActionAllowed(actionName)) {
-            addPoint(uuid, tournament, point);
+            addPoint(uuid, tournament, point, actionName);
         }
     }
 
-    public void addPoint(UUID uuid, Tournament tournament, int point) {
+    public void addPoint(UUID uuid, Tournament tournament, int point, String actionName) {
         if (!tournament.isActive()) return;
 
         PlayerHandler playerHandler = PlayerHandler.getInstance();
@@ -37,6 +38,10 @@ public class PointHandler {
         LitLibs libs = LitTournaments.getLitLibs();
 
         if (tournamentPlayer.isRegistered(tournament)) {
+            PointAddEvent event = new PointAddEvent(tournament, uuid, point, actionName);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+            if (event.isCancelled()) return;
+
             Database database = LitTournaments.getDatabase();
             database.addPoint(uuid, tournament, point);
 
