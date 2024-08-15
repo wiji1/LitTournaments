@@ -23,6 +23,10 @@ public class ConfigFile extends ConfigManager {
                 "Its in seconds.",
                 "Please don't set it under 60 seconds."
         )));
+        addDefault(ConfigPart.of("WaitTimeBetweenTournaments", 60, Arrays.asList(
+                "Its in seconds.",
+                "Its the time between finish and start time between tournaments."
+        )));
         addDefault(ConfigPart.of("DisableLeaderboardWithRightClick", false, Arrays.asList(
                 "If you set this to true, it will disable leaderboard menu opening",
                 "with right clicking tournament item in /tournament gui."

@@ -5,17 +5,15 @@ import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.api.events.TournamentEndEvent;
 import me.waterarchery.littournaments.api.events.TournamentStartEvent;
 import me.waterarchery.littournaments.database.Database;
+import me.waterarchery.littournaments.handlers.FileHandler;
 import me.waterarchery.littournaments.handlers.PlayerHandler;
 import me.waterarchery.littournaments.handlers.TournamentHandler;
 import me.waterarchery.littournaments.handlers.WebhookHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.*;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class Tournament {
@@ -105,12 +103,11 @@ public class Tournament {
         Duration remaining = Duration.between(now, finishTime);
         long inTicks = remaining.getSeconds() * 20L;
 
-        finishTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                finishTournament();
-            }
-        }.runTaskLater(LitTournaments.getInstance(), inTicks);
+        finishTask = Bukkit.getScheduler().runTaskLater(LitTournaments.getInstance(), this::finishTournament,inTicks);
+    }
+
+    public void stopFinishTask() {
+        if (finishTask != null) finishTask.cancel();
     }
 
     public void finishTournament() {
@@ -123,23 +120,21 @@ public class Tournament {
         TournamentEndEvent tournamentEndEvent = new TournamentEndEvent(tournament);
         Bukkit.getPluginManager().callEvent(tournamentEndEvent);
         WebhookHandler.sendWebhook(tournament);
+        int waitTime = FileHandler.getConfig().getYml().getInt("WaitTimeBetweenTournaments");
 
         CompletableFuture.runAsync(database.getReloadTournamentRunnable(tournament))
                 .thenRun(() -> {
                     tournamentHandler.parseRewards(tournament);
-
                     database.clearTournament(tournament);
                     playerHandler.clearPlayerValues(tournament);
                     getLeaderboard().clear();
-                }).thenRun(() -> new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        startFinishTask();
-                        TournamentStartEvent tournamentStartEvent = new TournamentStartEvent(tournament);
-                        Bukkit.getPluginManager().callEvent(tournamentStartEvent);
-                        tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_START");
-                    }
-                }.runTask(LitTournaments.getInstance()));
+                    stopFinishTask();
+                }).thenRun(() -> Bukkit.getScheduler().runTaskLater(LitTournaments.getInstance(), () -> {
+                    startFinishTask();
+                    TournamentStartEvent tournamentStartEvent = new TournamentStartEvent(tournament);
+                    Bukkit.getPluginManager().callEvent(tournamentStartEvent);
+                    tournamentHandler.parseConditionalCommand(tournament, "TOURNAMENT_START");
+                }, waitTime * 20L));
     }
 
     public String getCoolName() { return coolName; }
