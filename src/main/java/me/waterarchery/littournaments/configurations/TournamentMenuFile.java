@@ -44,6 +44,14 @@ public class TournamentMenuFile extends ConfigManager {
         addOptional(ConfigPart.noComment("Decoration.item3.Slot", 36));
         addOptional(ConfigPart.noComment("Decoration.item3.Lore", List.of()));
 
+        addOptional(ConfigPart.noComment("Decoration.closeItem.Name", "&cClose Menu"));
+        addOptional(ConfigPart.noComment("Decoration.closeItem.Material", "BARRIER"));
+        addOptional(ConfigPart.noComment("Decoration.closeItem.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.closeItem.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.closeItem.Action", "close"));
+        addOptional(ConfigPart.noComment("Decoration.closeItem.Slot", 40));
+        addOptional(ConfigPart.noComment("Decoration.closeItem.Lore", List.of()));
+
         addOptional(ConfigPart.noComment("Decoration.item4.Name", "&8"));
         addOptional(ConfigPart.noComment("Decoration.item4.Material", "GREEN_STAINED_GLASS_PANE"));
         addOptional(ConfigPart.noComment("Decoration.item4.CustomModelData", -1));

@@ -89,7 +89,12 @@ public class GUIHandler {
         for (String decorationItem : Objects.requireNonNull(yml.getConfigurationSection("Decoration")).getKeys(false)) {
             ItemStack itemStack = craftItemStack(manager, decorationItem, "Decoration", null);
             int slot = yml.getInt("Decoration." + decorationItem + ".Slot");
-            GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem();
+            String action = yml.getString("Decoration." + decorationItem + ".Action", "none");
+
+            GuiItem guiItem = ItemBuilder.from(itemStack)
+                    .asGuiItem(event -> {
+                        if (action.equalsIgnoreCase("close")) event.getWhoClicked().closeInventory();
+                    });
 
             gui.setItem(slot, guiItem);
         }
