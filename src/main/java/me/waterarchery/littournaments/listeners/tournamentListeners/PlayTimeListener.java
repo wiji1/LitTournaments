@@ -34,7 +34,9 @@ public class PlayTimeListener {
                 for (Tournament tournament : tournaments) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         World world = player.getWorld();
-                        pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), "none", 1);
+                        Bukkit.getScheduler().runTask(LitTournaments.getInstance(), () -> {
+                            pointHandler.addPoint(player.getUniqueId(), tournament, world.getName(), "none", 1);
+                        });
                     }
                 }
             }
