@@ -135,7 +135,20 @@ public class TournamentHandler {
         YamlConfiguration yml = tournament.getYamlConfiguration();
 
         List<String> commands = yml.getStringList("ConditionalCommands." + condition);
-        commands.forEach(command -> parseTournamentReward(command, null));
+        commands.forEach(command -> {
+            TournamentLeaderboard leaderboard = tournament.getLeaderboard();
+            if (command.contains("tournament_pos_1"))
+                command = command.replace("%tournament_pos_1%", leaderboard.getPlayer(1).getName());
+            if (command.contains("tournament_pos_2"))
+                command = command.replace("%tournament_pos_2%", leaderboard.getPlayer(1).getName());
+            if (command.contains("tournament_pos_3"))
+                command = command.replace("%tournament_pos_3%", leaderboard.getPlayer(1).getName());
+            if (command.contains("tournament_pos_4"))
+                command = command.replace("%tournament_pos_4%", leaderboard.getPlayer(1).getName());
+            if (command.contains("tournament_pos_5"))
+                command = command.replace("%tournament_pos_5%", leaderboard.getPlayer(1).getName());
+            parseTournamentReward(command, null);
+        });
     }
 
     public void parseTournamentReward(String command, @Nullable String targetPlayer) {

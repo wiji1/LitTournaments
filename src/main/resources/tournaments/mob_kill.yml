@@ -59,6 +59,14 @@ Checkers:
 # TOURNAMENT_START
 # TOURNAMENT_END
 #
+# Available placeholder:
+#
+# %tournament_pos_1% -> Returns player name
+# %tournament_pos_2% -> Returns player name
+# %tournament_pos_3% -> Returns player name
+# %tournament_pos_4% -> Returns player name
+# %tournament_pos_5% -> Returns player name
+#
 # Available command types:
 #
 # [BROADCAST]
