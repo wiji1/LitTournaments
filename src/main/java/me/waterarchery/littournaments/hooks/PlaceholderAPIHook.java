@@ -33,8 +33,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         ValueHandler valueHandler = ValueHandler.getInstance();
         TournamentPlayer tournamentPlayer = playerHandler.getPlayer(player.getUniqueId());
 
-        if(params.endsWith("_postion")) {
-            String tournamentName = params.replace("_postion", "");
+        if(params.endsWith("_position")) {
+            String tournamentName = params.replace("_position", "");
             Tournament tournament = tournamentHandler.getTournament(tournamentName);
             if (tournament != null) {
                 return valueHandler.getPlayerPosition(tournamentPlayer, tournament);
