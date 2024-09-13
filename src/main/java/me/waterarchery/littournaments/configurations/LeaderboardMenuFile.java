@@ -15,78 +15,78 @@ public class LeaderboardMenuFile extends ConfigManager {
 
     @Override
     public void initializeDefaults() {
-        addDefault(ConfigPart.noComment("Title", "&3%tournament% Leaderboard"));
-        addDefault(ConfigPart.noComment("Size", 45));
+        addOptional(ConfigPart.noComment("Title", "&3%tournament% Leaderboard"));
+        addOptional(ConfigPart.noComment("Size", 45));
 
-        addDefault(ConfigPart.noComment("Decoration.item1.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item1.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item1.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item1.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item1.Slot", 0));
-        addDefault(ConfigPart.noComment("Decoration.item1.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item1.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item1.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item1.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item1.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item1.Slot", 0));
+        addOptional(ConfigPart.noComment("Decoration.item1.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item2.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item2.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item2.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item2.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item2.Slot", 1));
-        addDefault(ConfigPart.noComment("Decoration.item2.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item2.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item2.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item2.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item2.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item2.Slot", 1));
+        addOptional(ConfigPart.noComment("Decoration.item2.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item3.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item3.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item3.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item3.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item3.Slot", 2));
-        addDefault(ConfigPart.noComment("Decoration.item3.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item3.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item3.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item3.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item3.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item3.Slot", 2));
+        addOptional(ConfigPart.noComment("Decoration.item3.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item4.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item4.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item4.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item4.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item4.Slot", 3));
-        addDefault(ConfigPart.noComment("Decoration.item4.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item4.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item4.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item4.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item4.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item4.Slot", 3));
+        addOptional(ConfigPart.noComment("Decoration.item4.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item5.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item5.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item5.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item5.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item5.Slot", 5));
-        addDefault(ConfigPart.noComment("Decoration.item5.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item5.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item5.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item5.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item5.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item5.Slot", 5));
+        addOptional(ConfigPart.noComment("Decoration.item5.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item7.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item7.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item7.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item7.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item7.Slot", 6));
-        addDefault(ConfigPart.noComment("Decoration.item7.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item7.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item7.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item7.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item7.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item7.Slot", 6));
+        addOptional(ConfigPart.noComment("Decoration.item7.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item8.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item8.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item8.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item8.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item8.Slot", 7));
-        addDefault(ConfigPart.noComment("Decoration.item8.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item8.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item8.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item8.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item8.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item8.Slot", 7));
+        addOptional(ConfigPart.noComment("Decoration.item8.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item9.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item9.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item9.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item9.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item9.Slot", 8));
-        addDefault(ConfigPart.noComment("Decoration.item9.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item9.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item9.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item9.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item9.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item9.Slot", 8));
+        addOptional(ConfigPart.noComment("Decoration.item9.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item10.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item10.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item10.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item10.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item10.Slot", 36));
-        addDefault(ConfigPart.noComment("Decoration.item10.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item10.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item10.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item10.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item10.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item10.Slot", 36));
+        addOptional(ConfigPart.noComment("Decoration.item10.Lore", List.of()));
 
-        addDefault(ConfigPart.noComment("Decoration.item11.Name", "&8"));
-        addDefault(ConfigPart.noComment("Decoration.item11.Material", "GREEN_STAINED_GLASS_PANE"));
-        addDefault(ConfigPart.noComment("Decoration.item11.CustomModelData", -1));
-        addDefault(ConfigPart.noComment("Decoration.item11.HideAttributes", true));
-        addDefault(ConfigPart.noComment("Decoration.item11.Slot", 44));
-        addDefault(ConfigPart.noComment("Decoration.item11.Lore", List.of()));
+        addOptional(ConfigPart.noComment("Decoration.item11.Name", "&8"));
+        addOptional(ConfigPart.noComment("Decoration.item11.Material", "GREEN_STAINED_GLASS_PANE"));
+        addOptional(ConfigPart.noComment("Decoration.item11.CustomModelData", -1));
+        addOptional(ConfigPart.noComment("Decoration.item11.HideAttributes", true));
+        addOptional(ConfigPart.noComment("Decoration.item11.Slot", 44));
+        addOptional(ConfigPart.noComment("Decoration.item11.Lore", List.of()));
 
         addDefault(ConfigPart.of("Items.playerTemplate", null, Arrays.asList(
                 "Don't change this id.",
@@ -128,25 +128,25 @@ public class LeaderboardMenuFile extends ConfigManager {
                 "&b| &7Position: &b%position%"
         )));
 
-        addDefault(ConfigPart.noComment("Items.previousPage.Name", "&cPrevious Page"));
-        addDefault(ConfigPart.noComment("Items.previousPage.Material", "ARROW"));
-        addDefault(ConfigPart.noComment("Items.previousPage.Slot", 37));
-        addDefault(ConfigPart.noComment("Items.previousPage.HideAttributes", true));
-        addDefault(ConfigPart.of("Items.previousPage.CustomModelData", -1,
+        addOptional(ConfigPart.noComment("Items.previousPage.Name", "&cPrevious Page"));
+        addOptional(ConfigPart.noComment("Items.previousPage.Material", "ARROW"));
+        addOptional(ConfigPart.noComment("Items.previousPage.Slot", 37));
+        addOptional(ConfigPart.noComment("Items.previousPage.HideAttributes", true));
+        addOptional(ConfigPart.of("Items.previousPage.CustomModelData", -1,
                 List.of("You can set it -1 to disable")));
-        addDefault(ConfigPart.noComment("Items.previousPage.Lore", Arrays.asList(
+        addOptional(ConfigPart.noComment("Items.previousPage.Lore", Arrays.asList(
                 "",
                 "&7Click here to navigate",
                 "&bprevious page."
         )));
 
-        addDefault(ConfigPart.noComment("Items.nextPage.Name", "&cNext Page"));
-        addDefault(ConfigPart.noComment("Items.nextPage.Material", "ARROW"));
-        addDefault(ConfigPart.noComment("Items.nextPage.Slot", 43));
-        addDefault(ConfigPart.noComment("Items.nextPage.HideAttributes", true));
-        addDefault(ConfigPart.of("Items.nextPage.CustomModelData", -1,
+        addOptional(ConfigPart.noComment("Items.nextPage.Name", "&cNext Page"));
+        addOptional(ConfigPart.noComment("Items.nextPage.Material", "ARROW"));
+        addOptional(ConfigPart.noComment("Items.nextPage.Slot", 43));
+        addOptional(ConfigPart.noComment("Items.nextPage.HideAttributes", true));
+        addOptional(ConfigPart.of("Items.nextPage.CustomModelData", -1,
                 List.of("You can set it -1 to disable")));
-        addDefault(ConfigPart.noComment("Items.nextPage.Lore", Arrays.asList(
+        addOptional(ConfigPart.noComment("Items.nextPage.Lore", Arrays.asList(
                 "",
                 "&7Click here to navigate",
                 "&bnext page."
