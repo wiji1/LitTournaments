@@ -26,7 +26,7 @@ public class SQLite extends Database {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
             return connection;
         } catch (SQLException ex) {
-            instance.getLogger().log(Level.SEVERE,"SQLite exception on initialize", ex);
+            instance.getLogger().log(Level.SEVERE, "SQLite exception on initialize", ex);
         } catch (ClassNotFoundException ex) {
             instance.getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it. Put it in /lib folder.");
         }
