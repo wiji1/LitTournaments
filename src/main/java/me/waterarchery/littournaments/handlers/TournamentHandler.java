@@ -79,12 +79,15 @@ public class TournamentHandler {
     }
 
     private void loadClass(Class<Tournament> tournamentClass, Object... args) {
+        LitLibs libs = LitTournaments.getLitLibs();
+        Logger logger = libs.getLogger();
         try {
             Class<?>[] argTypes = Arrays.stream(args)
                     .map(Object::getClass)
                     .toArray(Class<?>[]::new);
 
             Tournament tournament = tournamentClass.getDeclaredConstructor(argTypes).newInstance(args);
+            logger.log(String.format("Tournament loaded: %s", tournament.getIdentifier()));
             addTournament(tournament);
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
             throw new RuntimeException(ex);
