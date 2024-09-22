@@ -33,21 +33,25 @@ public class PointHandler {
     public void addPoint(UUID uuid, Tournament tournament, int point, String actionName) {
         if (!tournament.isActive()) return;
 
+        LitLibs libs = LitTournaments.getLitLibs();
         PlayerHandler playerHandler = PlayerHandler.getInstance();
         TournamentPlayer tournamentPlayer = playerHandler.getPlayer(uuid);
-        LitLibs libs = LitTournaments.getLitLibs();
+
+        if (tournamentPlayer == null) return;
 
         if (tournamentPlayer.isRegistered(tournament)) {
-            PointAddEvent event = new PointAddEvent(tournament, uuid, point, actionName);
-            Bukkit.getServer().getPluginManager().callEvent(event);
-            if (event.isCancelled()) return;
+            Bukkit.getScheduler().runTask(LitTournaments.getInstance(), () -> {
+                PointAddEvent event = new PointAddEvent(tournament, uuid, point, actionName);
+                Bukkit.getServer().getPluginManager().callEvent(event);
+                if (event.isCancelled()) return;
 
-            Database database = LitTournaments.getDatabase();
-            database.addPoint(uuid, tournament, point);
+                Database database = LitTournaments.getDatabase();
+                database.addPoint(uuid, tournament, point);
 
-            HashMap<Tournament, Long> map = tournamentPlayer.getTournamentValueMap();
-            long currentPoint = map.getOrDefault(tournament, 0L);
-            map.replace(tournament, currentPoint + point);
+                HashMap<Tournament, Long> map = tournamentPlayer.getTournamentValueMap();
+                long currentPoint = map.getOrDefault(tournament, 0L);
+                map.replace(tournament, currentPoint + point);
+            });
         }
         else if (tournamentPlayer.isLoading()) {
             Player player = Bukkit.getPlayer(uuid);
