@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 public class TournamentLeaderboard {
 
@@ -27,8 +28,8 @@ public class TournamentLeaderboard {
         return 0;
     }
 
-    public TournamentValue getPlayer(int pos) {
-        return leaderboard.getOrDefault(pos, null);
+    public Optional<TournamentValue> getPlayer(int pos) {
+        return Optional.ofNullable(leaderboard.getOrDefault(pos, null));
     }
 
     public void startRefreshTask() {
