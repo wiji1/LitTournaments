@@ -53,7 +53,7 @@ public class PlayerHandler {
             }
         }
 
-        throw new RuntimeException();
+        return null;
     }
 
     public void clearPlayerValues(Tournament tournament) {
