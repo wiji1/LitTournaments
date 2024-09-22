@@ -36,7 +36,7 @@ public class ValueHandler {
 
     public String getPlayerNameWithPosition(int position, Tournament tournament) {
         TournamentLeaderboard leaderboard = tournament.getLeaderboard();
-        TournamentValue value = leaderboard.getPlayer(position);
+        TournamentValue value = leaderboard.getPlayer(position).orElse(null);
 
         if (value!= null) return value.getName();
 
@@ -46,7 +46,7 @@ public class ValueHandler {
 
     public long getPlayerScoreWithPosition(int position, Tournament tournament) {
         TournamentLeaderboard leaderboard = tournament.getLeaderboard();
-        TournamentValue value = leaderboard.getPlayer(position);
+        TournamentValue value = leaderboard.getPlayer(position).orElse(null);
 
         if (value!= null) return value.getValue();
 

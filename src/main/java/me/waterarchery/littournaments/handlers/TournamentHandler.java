@@ -18,10 +18,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class TournamentHandler {
 
@@ -125,7 +122,7 @@ public class TournamentHandler {
 
             for (String reward : rewards) {
                 int pos = Integer.parseInt(rawPos);
-                TournamentValue value = leaderboard.getPlayer(pos);
+                TournamentValue value = leaderboard.getPlayer(pos).orElse(null);
                 if (value != null) {
                     String name = value.getName();
                     parseTournamentReward(reward, name);
@@ -140,16 +137,32 @@ public class TournamentHandler {
         List<String> commands = yml.getStringList("ConditionalCommands." + condition);
         commands.forEach(command -> {
             TournamentLeaderboard leaderboard = tournament.getLeaderboard();
-            if (command.contains("tournament_pos_1"))
-                command = command.replace("%tournament_pos_1%", leaderboard.getPlayer(1).getName());
-            if (command.contains("tournament_pos_2"))
-                command = command.replace("%tournament_pos_2%", leaderboard.getPlayer(1).getName());
-            if (command.contains("tournament_pos_3"))
-                command = command.replace("%tournament_pos_3%", leaderboard.getPlayer(1).getName());
-            if (command.contains("tournament_pos_4"))
-                command = command.replace("%tournament_pos_4%", leaderboard.getPlayer(1).getName());
-            if (command.contains("tournament_pos_5"))
-                command = command.replace("%tournament_pos_5%", leaderboard.getPlayer(1).getName());
+            String name = "None";
+            if (command.contains("tournament_pos_1")) {
+                TournamentValue value = leaderboard.getPlayer(1).orElse(null);
+                if (value != null) name = value.getName();
+                command = command.replace("%tournament_pos_1%", name);
+            }
+            else if (command.contains("tournament_pos_2")) {
+                TournamentValue value = leaderboard.getPlayer(2).orElse(null);
+                if (value != null) name = value.getName();
+                command = command.replace("%tournament_pos_2%", name);
+            }
+            else if (command.contains("tournament_pos_3")) {
+                TournamentValue value = leaderboard.getPlayer(3).orElse(null);
+                if (value != null) name = value.getName();
+                command = command.replace("%tournament_pos_3%", name);
+            }
+            else if (command.contains("tournament_pos_4")) {
+                TournamentValue value = leaderboard.getPlayer(4).orElse(null);
+                if (value != null) name = value.getName();
+                command = command.replace("%tournament_pos_4%", name);
+            }
+            else if (command.contains("tournament_pos_5")) {
+                TournamentValue value = leaderboard.getPlayer(5).orElse(null);
+                if (value != null) name = value.getName();
+                command = command.replace("%tournament_pos_5%", name);
+            }
             parseTournamentReward(command, null);
         });
     }
