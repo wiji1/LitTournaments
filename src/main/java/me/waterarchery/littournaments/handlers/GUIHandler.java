@@ -6,12 +6,12 @@ import me.waterarchery.litlibs.handlers.MessageHandler;
 import me.waterarchery.litlibs.libs.gui.builder.item.ItemBuilder;
 import me.waterarchery.litlibs.libs.gui.guis.BaseGui;
 import me.waterarchery.litlibs.libs.gui.guis.GuiItem;
-import me.waterarchery.litlibs.libs.skullcreator.SkullCreator;
 import me.waterarchery.litlibs.libs.xseries.XMaterial;
+import me.waterarchery.litlibs.libs.xseries.profiles.builder.XSkull;
+import me.waterarchery.litlibs.libs.xseries.profiles.objects.Profileable;
 import me.waterarchery.littournaments.LitTournaments;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -103,10 +103,10 @@ public class GUIHandler {
     private ItemStack parseMaterial(String material, @Nullable UUID uuid) {
         if (material.contains("HEAD-")) {
             String headBase = material.replace("HEAD-", "");
-            return SkullCreator.itemFromBase64(headBase);
+            return XSkull.createItem().profile(Profileable.detect(headBase)).apply();
         }
         else if (material.equalsIgnoreCase("PLAYER") && uuid != null) {
-            return SkullCreator.itemFromUuid(uuid);
+            return XSkull.createItem().profile(Profileable.detect(uuid.toString())).apply();
         }
         else {
             return XMaterial.matchXMaterial(material)
