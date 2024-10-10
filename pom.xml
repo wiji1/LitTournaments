@@ -126,30 +126,39 @@
     </repositories>
 
     <dependencies>
+        <!-- MythicMobs Hook -->
         <dependency>
             <groupId>io.lumine</groupId>
             <artifactId>Mythic-Dist</artifactId>
             <version>5.6.1</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- CrazyCrates Hook -->
         <dependency>
             <groupId>us.crazycrew.crazycrates</groupId>
             <artifactId>api</artifactId>
             <version>0.7</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- nuVotifier Hook -->
         <dependency>
             <groupId>com.github.NuVotifier</groupId>
             <artifactId>NuVotifier</artifactId>
             <version>2.7.2</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- EssentialsX Hook -->
         <dependency>
             <groupId>net.essentialsx</groupId>
             <artifactId>EssentialsX</artifactId>
             <version>2.20.1</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- CrazyCrates Hook -->
         <dependency>
             <groupId>com.badbones.crazycrates</groupId>
             <artifactId>CrazyCrates</artifactId>
@@ -157,6 +166,8 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/CrazyCrates-1.22.jar</systemPath>
         </dependency>
+
+        <!-- ExcellentCrates Hook -->
         <dependency>
             <groupId>su.nightexpress.excellentcrates</groupId>
             <artifactId>ExcellentCrates</artifactId>
@@ -164,6 +175,8 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/ExcellentCrates-5.2.3.1.jar</systemPath>
         </dependency>
+
+        <!-- Duels Hook -->
         <dependency>
             <groupId>com.github.Realizedd.Duels</groupId>
             <artifactId>duels-api</artifactId>
@@ -171,46 +184,69 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Papi Hook -->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.5</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Reflection Utils -->
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.10.2</version>
         </dependency>
+
+        <!-- Commands API -->
         <dependency>
             <groupId>dev.triumphteam</groupId>
             <artifactId>triumph-cmd-bukkit</artifactId>
             <version>2.0.0-SNAPSHOT</version>
         </dependency>
+
+        <!-- Spigot -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.21-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- bStats Hook -->
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.2</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- LitLibs -->
         <dependency>
             <groupId>com.github.WaterArchery</groupId>
             <artifactId>LitLibs</artifactId>
             <version>67a13c8e47</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- MySQL -->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>9.0.0</version>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.4.1</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Votifier Hook -->
         <dependency>
             <groupId>com.bencodez</groupId>
             <artifactId>votifierplus</artifactId>
