@@ -4,6 +4,9 @@ main: me.waterarchery.littournaments.LitTournaments
 api-version: '1.13'
 authors: [ WaterArchery ]
 description: Create fun tournaments for players
+libraries:
+  - org.mariadb.jdbc:mariadb-java-client:3.4.1
+  - com.zaxxer:HikariCP:6.0.0
 softdepend:
   - NuVotifier
   - Votifier
