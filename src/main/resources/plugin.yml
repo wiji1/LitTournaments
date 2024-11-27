@@ -1,7 +1,7 @@
 name: LitTournaments
 version: '${project.version}'
 main: me.waterarchery.littournaments.LitTournaments
-api-version: '1.13'
+api-version: '1.16'
 authors: [ WaterArchery ]
 description: Create fun tournaments for players
 libraries:
