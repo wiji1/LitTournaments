@@ -6,7 +6,7 @@
 
     <groupId>me.waterarchery</groupId>
     <artifactId>LitTournaments</artifactId>
-    <version>1.3.2</version>
+    <version>1.3.3</version>
     <packaging>jar</packaging>
 
     <name>LitTournaments</name>
@@ -124,6 +124,11 @@
             <id>crazycrew-snapshots</id>
             <url>https://repo.crazycrew.us/releases</url>
         </repository>
+        <repository>
+            <id>minecraft-libraries</id>
+            <name>Minecraft Libraries</name>
+            <url>https://libraries.minecraft.net/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -227,7 +232,7 @@
         <dependency>
             <groupId>com.github.WaterArchery</groupId>
             <artifactId>LitLibs</artifactId>
-            <version>67a13c8e47</version>
+            <version>1.1.8</version>
             <scope>provided</scope>
         </dependency>
 
@@ -252,6 +257,14 @@
             <groupId>com.bencodez</groupId>
             <artifactId>votifierplus</artifactId>
             <version>1.0.7</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- For Heads -->
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>6.0.54</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

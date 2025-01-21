@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 public abstract class Database {
 
     protected final LitTournaments instance;
-    protected Connection connection;
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(200);
 
     public String createTableToken = "CREATE TABLE IF NOT EXISTS {{TOURNAMENT_NAME}} (" +
@@ -33,7 +32,7 @@ public abstract class Database {
     public abstract void initialize();
 
     public void load(List<Tournament> tournaments) {
-        connection = getSQLConnection();
+        Connection connection = getSQLConnection();
 
         tournaments.forEach(tournament -> {
             try {
@@ -44,8 +43,12 @@ public abstract class Database {
                 s.close();
 
                 reloadLeaderboard(tournament);
-            } catch (SQLException ex) {
+            }
+            catch (SQLException ex) {
                 throw new RuntimeException(ex);
+            }
+            finally {
+                if (connection != null) try {connection.close();} catch (SQLException ignored) { }
             }
         });
     }
@@ -55,9 +58,8 @@ public abstract class Database {
             String query = String.format("INSERT INTO %s (player, score) VALUES(?, ?) ON CONFLICT(player)" +
                     " DO UPDATE SET score=score + ? WHERE player = ?;", tournament.getIdentifier());
 
-            try {
-                Connection conn = getSQLConnection();
-                PreparedStatement stmt = conn.prepareStatement(query);
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(query);
 
                 stmt.setString(1, uuid.toString());
                 stmt.setLong(2, point);
@@ -74,17 +76,12 @@ public abstract class Database {
         threadPool.submit(runnable);
     }
 
-    public void removePoint(UUID uuid, Tournament tournament, int point) {
-
-    }
-
     public void setPoint(UUID uuid, Tournament tournament, long point) {
         Runnable runnable = () -> {
             String query = String.format("REPLACE INTO %s (player, score) VALUES(?, ?);", tournament.getIdentifier());
 
-            try {
-                Connection conn = getSQLConnection();
-                PreparedStatement stmt = conn.prepareStatement(query);
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(query);
                 stmt.setString(1, uuid.toString());
                 stmt.setLong(2, point);
 
@@ -101,9 +98,8 @@ public abstract class Database {
     public long getPoint(UUID uuid, Tournament tournament) {
         String query = String.format("SELECT score FROM %s WHERE player = ?;", tournament.getIdentifier());
 
-        try {
-            Connection conn = getSQLConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
+        try (Connection connection = getSQLConnection()) {
+            PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, uuid.toString());
 
             ResultSet rs = stmt.executeQuery();
@@ -122,9 +118,8 @@ public abstract class Database {
         Runnable runnable = () -> {
             String QUERY = String.format("INSERT INTO %s (player, score) VALUES(?, ?);", tournament.getIdentifier());
 
-            try {
-                Connection conn = getSQLConnection();
-                PreparedStatement stmt = conn.prepareStatement(QUERY);
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(QUERY);
                 stmt.setString(1, uuid.toString());
                 stmt.setLong(2, 0L);
 
@@ -142,9 +137,8 @@ public abstract class Database {
         Runnable runnable = () -> {
             String query = String.format("DELETE FROM %s WHERE player = ?;", tournament.getIdentifier());
 
-            try {
-                Connection conn = getSQLConnection();
-                PreparedStatement stmt = conn.prepareStatement(query);
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(query);
                 stmt.setString(1, uuid.toString());
 
                 stmt.executeUpdate();
@@ -166,9 +160,8 @@ public abstract class Database {
             String query = String.format("SELECT * FROM %s ORDER BY score DESC;", tournament.getIdentifier());
             TournamentLeaderboard leaderboard = tournament.getLeaderboard();
 
-            try {
-                Connection conn = getSQLConnection();
-                PreparedStatement stmt = conn.prepareStatement(query);
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(query);
                 ResultSet rs = stmt.executeQuery();
 
                 int pos = 1;
@@ -191,9 +184,8 @@ public abstract class Database {
         Runnable runnable = () -> {
             String query = String.format("DELETE FROM %s;", tournament.getIdentifier());
 
-            try {
-                Connection conn = getSQLConnection();
-                PreparedStatement stmt = conn.prepareStatement(query);
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(query);
                 stmt.executeUpdate();
             }
             catch (SQLException ex) {
@@ -202,15 +194,6 @@ public abstract class Database {
         };
 
         threadPool.submit(runnable);
-    }
-
-    public void shutdown() {
-        shutdownPool();
-        try {
-            getSQLConnection().close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void shutdownPool(){

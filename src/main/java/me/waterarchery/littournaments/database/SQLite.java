@@ -11,6 +11,8 @@ import java.util.logging.Level;
 
 public class SQLite extends Database {
 
+    protected Connection connection;
+
     public SQLite(LitTournaments instance){
         super(instance);
     }
@@ -19,9 +21,8 @@ public class SQLite extends Database {
         File dataFolder = new File(instance.getDataFolder(), "database.db");
 
         try {
-            if(connection != null && !connection.isClosed()){
-                return connection;
-            }
+            if(connection != null && !connection.isClosed()) return connection;
+
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
             return connection;

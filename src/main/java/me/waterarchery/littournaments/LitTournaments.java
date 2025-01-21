@@ -29,7 +29,7 @@ public final class LitTournaments extends JavaPlugin {
         CommandHandler commandHandler = CommandHandler.getInstance();
         commandHandler.unRegisterCommands();
 
-        database.shutdown();
+        database.shutdownPool();
 
         LoadHandler loadHandler = LoadHandler.getInstance();
         PlaceholderAPIHook placeholderAPIHook = loadHandler.getPlaceholderAPIHook();

@@ -20,11 +20,7 @@ public class MySQL extends Database {
 
     public Connection getSQLConnection() {
         try {
-            if(connection != null && !connection.isClosed()){
-                return connection;
-            }
-            connection = dataSource.getConnection();
-            return connection;
+            return dataSource.getConnection();
         } catch (SQLException ex) {
             LitTournaments.getLitLibs().getLogger().log("MySQL exception on initialize");
         }
