@@ -106,7 +106,10 @@ public class GUIHandler {
             return XSkull.createItem().profile(Profileable.detect(headBase)).apply();
         }
         else if (material.equalsIgnoreCase("PLAYER") && uuid != null) {
-            return XSkull.createItem().profile(Profileable.detect(uuid.toString())).apply();
+            return XSkull.createItem()
+                    .profile(Profileable.of(uuid))
+                    .fallback(Profileable.of(new ItemStack(Material.PLAYER_HEAD)))
+                    .apply();
         }
         else {
             return XMaterial.matchXMaterial(material)
