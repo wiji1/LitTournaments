@@ -32,25 +32,25 @@ public abstract class Database {
     public abstract void initialize();
 
     public void load(List<Tournament> tournaments) {
-        Connection connection = getSQLConnection();
+        try (Connection connection = getSQLConnection()){
+            tournaments.forEach(tournament -> {
+                try {
+                    String tableName = tournament.getIdentifier();
+                    String query = createTableToken.replace("{{TOURNAMENT_NAME}}", tableName);
+                    Statement s = connection.createStatement();
+                    s.executeUpdate(query);
+                    s.close();
 
-        tournaments.forEach(tournament -> {
-            try {
-                String tableName = tournament.getIdentifier();
-                String query = createTableToken.replace("{{TOURNAMENT_NAME}}", tableName);
-                Statement s = connection.createStatement();
-                s.executeUpdate(query);
-                s.close();
-
-                reloadLeaderboard(tournament);
-            }
-            catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-            finally {
-                if (connection != null) try {connection.close();} catch (SQLException ignored) { }
-            }
-        });
+                    reloadLeaderboard(tournament);
+                }
+                catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+        }
+        catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public void addPoint(UUID uuid, Tournament tournament, long point) {

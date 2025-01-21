@@ -11,8 +11,6 @@ import java.util.logging.Level;
 
 public class SQLite extends Database {
 
-    protected Connection connection;
-
     public SQLite(LitTournaments instance){
         super(instance);
     }
@@ -21,11 +19,8 @@ public class SQLite extends Database {
         File dataFolder = new File(instance.getDataFolder(), "database.db");
 
         try {
-            if(connection != null && !connection.isClosed()) return connection;
-
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
-            return connection;
+            return DriverManager.getConnection("jdbc:sqlite:" + dataFolder);
         } catch (SQLException ex) {
             instance.getLogger().log(Level.SEVERE, "SQLite exception on initialize", ex);
         } catch (ClassNotFoundException ex) {
