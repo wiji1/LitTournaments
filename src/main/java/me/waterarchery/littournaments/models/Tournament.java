@@ -172,6 +172,14 @@ public class Tournament {
         Bukkit.getPluginManager().callEvent(tournamentStartEvent);
         tournamentHandler.parseConditionalCommand(this, "TOURNAMENT_START");
         this.isActive = true;
+
+        File file = new File(LitTournaments.getInstance().getDataFolder(), "/tournaments/" + this.identifier + ".yml");
+        yamlConfiguration.set("Active", true);
+        try {
+            yamlConfiguration.save(file);
+        } catch (IOException e) {
+            LitTournaments.getInstance().getLogger().log(Level.WARNING, "Error saving tournament file: " + this.identifier, e);
+        }
     }
 
     public String getCoolName() { return coolName; }
