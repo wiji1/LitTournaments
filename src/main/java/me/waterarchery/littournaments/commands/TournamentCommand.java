@@ -18,6 +18,7 @@ import me.waterarchery.littournaments.handlers.TournamentHandler;
 import me.waterarchery.littournaments.models.JoinChecker;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -203,6 +204,37 @@ public class TournamentCommand extends BaseCommand {
                 Database database = LitTournaments.getDatabase();
                 database.reloadLeaderboard(tournament);
                 libs.getMessageHandler().sendLangMessage(sender, "LeaderboardUpdated");
+            }
+            else {
+                libs.getMessageHandler().sendLangMessage(sender, "NotActiveTournament");
+            }
+        }
+        else {
+            libs.getMessageHandler().sendLangMessage(sender, "NoTournamentWithName");
+        }
+    }
+
+    @SubCommand("deletedata")
+    @Permission("littournaments.admin.delete")
+    public void deleteData(CommandSender sender, @Suggestion("players") String playerName, @Suggestion("tournaments") String tournamentName) {
+        LitLibs libs = LitTournaments.getLitLibs();
+        TournamentHandler tournamentHandler = TournamentHandler.getInstance();
+        PlayerHandler playerHandler = PlayerHandler.getInstance();
+        Tournament tournament = tournamentHandler.getTournament(tournamentName);
+        Player player = Bukkit.getPlayer(playerName);
+
+        if (player == null) {
+            libs.getMessageHandler().sendLangMessage(sender, "NotOnlinePlayer");
+            return;
+        }
+
+        if (tournament != null) {
+            if (tournament.isActive()) {
+                TournamentPlayer tournamentPlayer = playerHandler.getPlayer(player.getUniqueId());
+                tournamentPlayer.leave(tournament);
+
+                Database database = LitTournaments.getDatabase();
+                database.reloadLeaderboard(tournament);
             }
             else {
                 libs.getMessageHandler().sendLangMessage(sender, "NotActiveTournament");

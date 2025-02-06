@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class Database {
 
     protected final LitTournaments instance;
-    private static final ExecutorService threadPool = Executors.newFixedThreadPool(200);
+    private static final ExecutorService threadPool = Executors.newFixedThreadPool(20);
 
     public String createTableToken = "CREATE TABLE IF NOT EXISTS {{TOURNAMENT_NAME}} (" +
             "`player` varchar(36) NOT NULL PRIMARY KEY," +

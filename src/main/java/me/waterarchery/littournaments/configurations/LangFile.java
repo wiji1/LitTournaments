@@ -15,6 +15,7 @@ public class LangFile extends ConfigManager {
         addDefault(ConfigPart.noComment("NoPermission", "&7You don't have enough &bpermission to execute &7this command."));
         addDefault(ConfigPart.noComment("ConfigReloaded", "&bConfig and lang files reloaded successfully."));
         addDefault(ConfigPart.noComment("InGameOnly", "&7You can only use this command from &bin-game."));
+        addDefault(ConfigPart.noComment("NotOnlinePlayer", "&7Player is not in the server."));
         addDefault(ConfigPart.noComment("UnknownCommand", "&7There is &bno command &7with this &bsub command."));
         addDefault(ConfigPart.noComment("TooManyArgs", "&7You entered &btoo many arguments &7for this command."));
         addDefault(ConfigPart.noComment("TooFewArgs", "&7You entered &btoo few arguments &7for this command."));
