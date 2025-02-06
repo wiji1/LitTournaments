@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Command(value = "littournaments", alias = {"tournaments", "tournament"})
 public class TournamentCommand extends BaseCommand {
@@ -221,28 +222,27 @@ public class TournamentCommand extends BaseCommand {
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
         PlayerHandler playerHandler = PlayerHandler.getInstance();
         Tournament tournament = tournamentHandler.getTournament(tournamentName);
-        Player player = Bukkit.getPlayer(playerName);
 
-        if (player == null) {
-            libs.getMessageHandler().sendLangMessage(sender, "NotOnlinePlayer");
+        if (tournament == null) {
+            libs.getMessageHandler().sendLangMessage(sender, "NoTournamentWithName");
             return;
         }
 
-        if (tournament != null) {
-            if (tournament.isActive()) {
-                TournamentPlayer tournamentPlayer = playerHandler.getPlayer(player.getUniqueId());
-                tournamentPlayer.leave(tournament);
+        if (!tournament.isActive()) {
+            libs.getMessageHandler().sendLangMessage(sender, "NotActiveTournament");
+            return;
+        }
 
-                Database database = LitTournaments.getDatabase();
-                database.reloadLeaderboard(tournament);
-            }
-            else {
-                libs.getMessageHandler().sendLangMessage(sender, "NotActiveTournament");
-            }
-        }
-        else {
-            libs.getMessageHandler().sendLangMessage(sender, "NoTournamentWithName");
-        }
+        CompletableFuture.supplyAsync(() -> Bukkit.getOfflinePlayer(playerName)).thenAcceptAsync(player -> {
+            Database database = LitTournaments.getDatabase();
+
+            TournamentPlayer tournamentPlayer = playerHandler.getPlayer(player.getUniqueId());
+
+            if (tournamentPlayer == null) database.deleteFromTournament(player.getUniqueId(), tournament);
+            else tournamentPlayer.leave(tournament);
+
+            database.reloadLeaderboard(tournament);
+        });
     }
 
 }
