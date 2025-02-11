@@ -66,7 +66,6 @@ public class TournamentGUI {
             ItemStack itemStack = guiHandler.craftItemStack(manager, tournamentName, "Items", null);
             int slot = yml.getInt("Items." + tournamentName + ".Slot");
 
-            // If the tournament is not active the barrier will appear
             if (!tournament.isActive()) {
                 itemStack.setType(Material.BARRIER);
             }
@@ -87,6 +86,7 @@ public class TournamentGUI {
                             if (tournamentPlayer.isRegistered(tournament)) {
                                 libs.getMessageHandler().sendLangMessage(player, "AlreadyJoined");
                                 libs.getSoundHandler().sendSound(player, "Sounds.AlreadyJoined");
+                                player.closeInventory();
                             }
                             else {
                                 tournamentPlayer.join(tournament);
