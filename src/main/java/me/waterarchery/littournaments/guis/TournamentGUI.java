@@ -11,6 +11,7 @@ import me.waterarchery.littournaments.handlers.*;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentPlayer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -64,6 +65,11 @@ public class TournamentGUI {
 
             ItemStack itemStack = guiHandler.craftItemStack(manager, tournamentName, "Items", null);
             int slot = yml.getInt("Items." + tournamentName + ".Slot");
+
+            // If the tournament is not active the barrier will appear
+            if (!tournament.isActive()) {
+                itemStack.setType(Material.BARRIER);
+            }
             boolean hideAttributes = yml.getBoolean("Items." + tournamentName + ".HideAttributes");
             parseLore(itemStack, tournamentPlayer, tournament);
 
