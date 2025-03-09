@@ -69,6 +69,7 @@ public class TournamentGUI {
             if (!tournament.isActive()) {
                 itemStack.setType(Material.BARRIER);
             }
+
             boolean hideAttributes = yml.getBoolean("Items." + tournamentName + ".HideAttributes");
             parseLore(itemStack, tournamentPlayer, tournament);
 

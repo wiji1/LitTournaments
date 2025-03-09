@@ -1,15 +1,13 @@
 package me.waterarchery.littournaments.handlers;
 
-import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.configuration.ConfigManager;
-import me.waterarchery.litlibs.handlers.MessageHandler;
 import me.waterarchery.litlibs.libs.gui.builder.item.ItemBuilder;
 import me.waterarchery.litlibs.libs.gui.guis.BaseGui;
 import me.waterarchery.litlibs.libs.gui.guis.GuiItem;
 import me.waterarchery.litlibs.libs.xseries.XMaterial;
 import me.waterarchery.litlibs.libs.xseries.profiles.builder.XSkull;
 import me.waterarchery.litlibs.libs.xseries.profiles.objects.Profileable;
-import me.waterarchery.littournaments.LitTournaments;
+import me.waterarchery.litlibs.utils.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -34,11 +32,10 @@ public class GUIHandler {
     }
 
     public String getMenuTitle(ConfigManager menu) {
-        LitLibs libs = LitTournaments.getLitLibs();
         FileConfiguration yml = menu.getYml();
         String title = yml.getString("Title");
 
-        return libs.getMessageHandler().updateColors(title);
+        return ChatUtils.colorizeLegacy(title);
     }
 
     public int getMenuSize(ConfigManager menu) {
@@ -49,9 +46,7 @@ public class GUIHandler {
     }
 
     public ItemStack craftItemStack(ConfigManager menu, String itemName, String path, @Nullable UUID player) {
-        LitLibs libs = LitTournaments.getLitLibs();
         FileConfiguration yml = menu.getYml();
-        MessageHandler mesHandler = libs.getMessageHandler();
 
         String name = yml.getString(path + "." + itemName + ".Name");
         String materialName = yml.getString(path + "." + itemName + ".Material", "BEDROCK");
@@ -63,11 +58,11 @@ public class GUIHandler {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         for (String part : rawLore) {
-            lore.add(mesHandler.updateColors(part));
+            lore.add(ChatUtils.colorizeLegacy(part));
         }
 
         assert itemMeta != null;
-        itemMeta.setDisplayName(mesHandler.updateColors(name));
+        itemMeta.setDisplayName(ChatUtils.colorizeLegacy(name));
         itemMeta.setLore(lore);
         if (customModelData != -1) itemMeta.setCustomModelData(customModelData);
 

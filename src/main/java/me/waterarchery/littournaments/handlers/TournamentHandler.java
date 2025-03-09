@@ -2,6 +2,7 @@ package me.waterarchery.littournaments.handlers;
 
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.logger.Logger;
+import me.waterarchery.litlibs.utils.ChatUtils;
 import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentLeaderboard;
@@ -175,7 +176,7 @@ public class TournamentHandler {
             if (player != null) libs.getMessageHandler().sendMessage(player, command.replace("[MESSAGE] ", ""));
         }
         else if (command.startsWith("[BROADCAST]")) {
-            String message = libs.getMessageHandler().updateColors(command.replace("[BROADCAST] ", ""));
+            String message = ChatUtils.colorizeLegacy(command.replace("[BROADCAST] ", ""));
             Bukkit.broadcastMessage(message);
         }
         else if (command.startsWith("[COMMAND]")) {
