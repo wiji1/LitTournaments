@@ -2,6 +2,7 @@ package me.waterarchery.littournaments.guis;
 
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.litlibs.configuration.ConfigManager;
+import me.waterarchery.litlibs.libs.adventure.text.Component;
 import me.waterarchery.litlibs.libs.gui.builder.item.ItemBuilder;
 import me.waterarchery.litlibs.libs.gui.guis.BaseGui;
 import me.waterarchery.litlibs.libs.gui.guis.Gui;
@@ -10,7 +11,6 @@ import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.handlers.*;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentPlayer;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
