@@ -19,7 +19,7 @@ public final class LitTournaments extends JavaPlugin {
         Logger logger = litLibs.getLogger();
         LoadHandler loadHandler = LoadHandler.getInstance();
         loadHandler.load();
-        logger.log("LitTournaments enabled &bv" + getDescription().getVersion());
+        logger.log("LitTournaments enabled <#47D4FF>v" + getDescription().getVersion());
     }
 
     @Override

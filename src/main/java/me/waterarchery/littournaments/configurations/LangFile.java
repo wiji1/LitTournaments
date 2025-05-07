@@ -12,36 +12,36 @@ public class LangFile extends ConfigManager {
 
     @Override
     public void initializeDefaults() {
-        addDefault(ConfigPart.noComment("NoPermission", "&7You don't have enough &bpermission to execute &7this command."));
-        addDefault(ConfigPart.noComment("ConfigReloaded", "&bConfig and lang files reloaded successfully."));
-        addDefault(ConfigPart.noComment("InGameOnly", "&7You can only use this command from &bin-game."));
-        addDefault(ConfigPart.noComment("NotOnlinePlayer", "&7Player is not in the server."));
-        addDefault(ConfigPart.noComment("UnknownCommand", "&7There is &bno command &7with this &bsub command."));
-        addDefault(ConfigPart.noComment("TooManyArgs", "&7You entered &btoo many arguments &7for this command."));
-        addDefault(ConfigPart.noComment("TooFewArgs", "&7You entered &btoo few arguments &7for this command."));
-        addDefault(ConfigPart.noComment("InvalidArg", "&7You entered a &binvalid argument &7for this command."));
-        addDefault(ConfigPart.noComment("NoTournamentWithName", "&7There is &bno tournament &7with this name!"));
-        addDefault(ConfigPart.noComment("JoinFirst", "&7You need to &bjoin this tournament &7before leaving!"));
-        addDefault(ConfigPart.noComment("AlreadyJoined", "&7You already &bjoined this tournament!"));
-        addDefault(ConfigPart.noComment("SuccessfullyRegisteredOnJoin", "&7You successfully registered to a tournament!"));
-        addDefault(ConfigPart.noComment("SuccessfullyRegistered", "&7You successfully registered to this tournament!"));
-        addDefault(ConfigPart.noComment("SuccessfullyLeaved", "&7You successfully leaved from this tournament!"));
-        addDefault(ConfigPart.noComment("StillLoading", "&7Your data is &bstill loading &7please wait for &byour tournaments!"));
-        addDefault(ConfigPart.noComment("FilesReloaded", "&bAll files reloaded successfully!"));
-        addDefault(ConfigPart.noComment("LeaderboardUpdated", "&7Leaderboard &bupdated!"));
-        addDefault(ConfigPart.noComment("NotActiveTournament", "&cThis tournament is not active!"));
-        addDefault(ConfigPart.noComment("LoadingLeaderboard", "&bLoading leaderboard! It can take several seconds."));
+        addDefault(ConfigPart.noComment("NoPermission", "<#CCFFEE>You don't have enough <#47D4FF>permission to execute <#CCFFEE>this command."));
+        addDefault(ConfigPart.noComment("ConfigReloaded", "<#47D4FF>Config and lang files reloaded successfully."));
+        addDefault(ConfigPart.noComment("InGameOnly", "<#CCFFEE>You can only use this command from <#47D4FF>in-game."));
+        addDefault(ConfigPart.noComment("NotOnlinePlayer", "<#CCFFEE>Player is not in the server."));
+        addDefault(ConfigPart.noComment("UnknownCommand", "<#CCFFEE>There is <#47D4FF>no command <#CCFFEE>with this <#47D4FF>sub command."));
+        addDefault(ConfigPart.noComment("TooManyArgs", "<#CCFFEE>You entered <#47D4FF>too many arguments <#CCFFEE>for this command."));
+        addDefault(ConfigPart.noComment("TooFewArgs", "<#CCFFEE>You entered <#47D4FF>too few arguments <#CCFFEE>for this command."));
+        addDefault(ConfigPart.noComment("InvalidArg", "<#CCFFEE>You entered a <#47D4FF>invalid argument <#CCFFEE>for this command."));
+        addDefault(ConfigPart.noComment("NoTournamentWithName", "<#CCFFEE>There is <#47D4FF>no tournament <#CCFFEE>with this name!"));
+        addDefault(ConfigPart.noComment("JoinFirst", "<#CCFFEE>You need to <#47D4FF>join this tournament <#CCFFEE>before leaving!"));
+        addDefault(ConfigPart.noComment("AlreadyJoined", "<#CCFFEE>You already <#47D4FF>joined this tournament!"));
+        addDefault(ConfigPart.noComment("SuccessfullyRegisteredOnJoin", "<#CCFFEE>You successfully registered to a tournament!"));
+        addDefault(ConfigPart.noComment("SuccessfullyRegistered", "<#CCFFEE>You successfully registered to this tournament!"));
+        addDefault(ConfigPart.noComment("SuccessfullyLeaved", "<#CCFFEE>You successfully leaved from this tournament!"));
+        addDefault(ConfigPart.noComment("StillLoading", "<#CCFFEE>Your data is <#47D4FF>still loading <#CCFFEE>please wait for <#47D4FF>your tournaments!"));
+        addDefault(ConfigPart.noComment("FilesReloaded", "<#47D4FF>All files reloaded successfully!"));
+        addDefault(ConfigPart.noComment("LeaderboardUpdated", "<#CCFFEE>Leaderboard <#47D4FF>updated!"));
+        addDefault(ConfigPart.noComment("NotActiveTournament", "<red>This tournament is not active!"));
+        addDefault(ConfigPart.noComment("LoadingLeaderboard", "<#47D4FF>Loading leaderboard! It can take several seconds."));
         addDefault(ConfigPart.noComment("TournamentEndAdmin",
-                "&7You have &bsuccessfully finished &7the tournament. It may take a &bfew seconds to &7take effect."));
+                "<#CCFFEE>You have <#47D4FF>successfully finished <#CCFFEE>the tournament. It may take a <#47D4FF>few seconds to <#CCFFEE>take effect."));
         addDefault(ConfigPart.noComment("TournamentStartAdmin",
-                "&7You have &bsuccessfully started &7the tournament. It may take a &bfew seconds to &7take effect."));
+                "<#CCFFEE>You have <#47D4FF>successfully started <#CCFFEE>the tournament. It may take a <#47D4FF>few seconds to <#CCFFEE>take effect."));
         addDefault(ConfigPart.noComment("AlreadyActiveTournament",
-                "&7This tournament is already &bactive!"));
+                "<#CCFFEE>This tournament is already <#47D4FF>active!"));
 
-        addDefault(ConfigPart.noComment("Placeholders.NotActive", "&cNot active!"));
+        addDefault(ConfigPart.noComment("Placeholders.NotActive", "<red>Not active!"));
         addDefault(ConfigPart.noComment("Placeholders.None", "None"));
-        addDefault(ConfigPart.noComment("Placeholders.NotRegistered", "&7Not Registered"));
-        addDefault(ConfigPart.noComment("Placeholders.RemainingTime", "&c%day% days %hour% hours and %minute% minutes"));
+        addDefault(ConfigPart.noComment("Placeholders.NotRegistered", "<#CCFFEE>Not Registered"));
+        addDefault(ConfigPart.noComment("Placeholders.RemainingTime", "<red>%day% days %hour% hours and %minute% minutes"));
     }
     
 }

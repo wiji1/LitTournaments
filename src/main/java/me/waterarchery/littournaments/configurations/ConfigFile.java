@@ -16,7 +16,7 @@ public class ConfigFile extends ConfigManager {
 
     @Override
     public void initializeDefaults() {
-        addDefault(ConfigPart.noComment("Prefix", "&7[&bTournaments&7] "));
+        addDefault(ConfigPart.noComment("Prefix", "<#47D4FF><bold>ʟɪᴛᴛᴏᴜʀɴᴀᴍᴇɴᴛs <reset><dark_gray>»<reset>  "));
         addDefault(ConfigPart.of("Language", "en",
                 Collections.singletonList("Currently only en and tr available")));
 

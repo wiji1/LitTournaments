@@ -75,9 +75,9 @@ Checkers:
 # [COMMAND]
 ConditionalCommands:
   TOURNAMENT_START:
-    - '[BROADCAST] &bPlayer Kill tournament is started! &7(/tournament)'
+    - '[BROADCAST] <#47D4FF>Player Kill tournament is started! <#CCFFEE>(/tournament)'
   TOURNAMENT_END:
-    - '[BROADCAST] &bPlayer Kill tournament is ended! New one will be started few seconds later. &7(/tournament)'
+    - '[BROADCAST] <#47D4FF>Player Kill tournament is ended! New one will be started few seconds later. <#CCFFEE>(/tournament)'
 
 # You can define and delete tournament rewards
 # Available command types:
@@ -87,14 +87,14 @@ ConditionalCommands:
 # [MESSAGE]
 Rewards:
   1:
-    - '[MESSAGE] &bCongratulations! You won the Player Kill tournament.'
-    - '[MESSAGE] &bYou will receive your rewards in a second.'
+    - '[MESSAGE] <#47D4FF>Congratulations! You won the Player Kill tournament.'
+    - '[MESSAGE] <#47D4FF>You will receive your rewards in a second.'
     - '[COMMAND] eco give %player% 1000'
   2:
-    - '[MESSAGE] &bCongratulations! You finished second in the Player Kill tournament.'
-    - '[MESSAGE] &bYou will receive your rewards in a second.'
+    - '[MESSAGE] <#47D4FF>Congratulations! You finished second in the Player Kill tournament.'
+    - '[MESSAGE] <#47D4FF>You will receive your rewards in a second.'
     - '[COMMAND] eco give %player% 500'
   3:
-    - '[MESSAGE] &bCongratulations! You finished third in the Player Kill tournament.'
-    - '[MESSAGE] &bYou will receive your rewards in a second.'
+    - '[MESSAGE] <#47D4FF>Congratulations! You finished third in the Player Kill tournament.'
+    - '[MESSAGE] <#47D4FF>You will receive your rewards in a second.'
     - '[COMMAND] eco give %player% 100'
