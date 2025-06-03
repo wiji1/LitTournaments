@@ -69,6 +69,11 @@ public class ConfigFile extends ConfigManager {
         addDefault(ConfigPart.noComment("Database.MySQL.database", "db"));
         addDefault(ConfigPart.noComment("Database.MySQL.user", "user"));
         addDefault(ConfigPart.noComment("Database.MySQL.password", "mypassword"));
+
+        addDefault(ConfigPart.of("Redis.enabled", "false", Collections.singletonList("Here you can enable Redis support for cross-server syncing.")));
+        addDefault(ConfigPart.noComment("Redis.host", "localhost"));
+        addDefault(ConfigPart.noComment("Redis.port", 6379));
+        addDefault(ConfigPart.of("Redis.password", "", Collections.singletonList("Leave empty if you don't have a password.")));
     }
 
 }

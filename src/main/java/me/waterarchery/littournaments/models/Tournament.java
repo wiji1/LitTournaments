@@ -5,10 +5,8 @@ import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.api.events.TournamentEndEvent;
 import me.waterarchery.littournaments.api.events.TournamentStartEvent;
 import me.waterarchery.littournaments.database.Database;
-import me.waterarchery.littournaments.handlers.FileHandler;
-import me.waterarchery.littournaments.handlers.PlayerHandler;
-import me.waterarchery.littournaments.handlers.TournamentHandler;
-import me.waterarchery.littournaments.handlers.WebhookHandler;
+import me.waterarchery.littournaments.enums.RedisMessage;
+import me.waterarchery.littournaments.handlers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitTask;
@@ -25,6 +23,7 @@ public class Tournament {
     private final YamlConfiguration yamlConfiguration;
     private final boolean shouldRestartAfterFinished;
     private boolean isActive;
+    private boolean isEnding;
     private final String timePeriod;
     private final String coolName;
     private BukkitTask finishTask;
@@ -37,6 +36,7 @@ public class Tournament {
         this.yamlConfiguration = yamlConfiguration;
 
         this.isActive = yamlConfiguration.getBoolean("Active");
+        this.isEnding = false;
         this.timePeriod = yamlConfiguration.getString("TimePeriod");
         this.shouldRestartAfterFinished = yamlConfiguration.getBoolean("RestartAfterFinished", true);
 
@@ -119,6 +119,10 @@ public class Tournament {
 
     public void finishTournament() {
         Tournament tournament = this;
+
+        if(!tournament.isActive() || tournament.isEnding()) return;
+        tournament.isEnding = true;
+
         Database database = LitTournaments.getDatabase();
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
         PlayerHandler playerHandler = PlayerHandler.getInstance();
@@ -128,6 +132,9 @@ public class Tournament {
         Bukkit.getPluginManager().callEvent(tournamentEndEvent);
         WebhookHandler.sendWebhook(tournament);
         int waitTime = FileHandler.getConfig().getYml().getInt("WaitTimeBetweenTournaments");
+
+        RedisHandler redisHandler = RedisHandler.getInstance();
+        redisHandler.sendUpdate(RedisMessage.TOURNAMENT_END, tournament.getIdentifier());
 
         CompletableFuture.runAsync(database.getReloadTournamentRunnable(tournament))
                 .thenRun(() -> {
@@ -158,6 +165,8 @@ public class Tournament {
     }
 
     public void startTournament() {
+        if (isActive()) return;
+
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
         Database database = LitTournaments.getDatabase();
         PlayerHandler playerHandler = PlayerHandler.getInstance();
@@ -171,6 +180,10 @@ public class Tournament {
         Bukkit.getPluginManager().callEvent(tournamentStartEvent);
         tournamentHandler.parseConditionalCommand(this, "TOURNAMENT_START");
         this.isActive = true;
+        this.isEnding = false;
+
+        RedisHandler redisHandler = RedisHandler.getInstance();
+        redisHandler.sendUpdate(RedisMessage.TOURNAMENT_START, this.getIdentifier());
 
         File file = new File(LitTournaments.getInstance().getDataFolder(), "/tournaments/" + this.identifier + ".yml");
         yamlConfiguration.set("Active", true);
@@ -194,6 +207,8 @@ public class Tournament {
     public TournamentLeaderboard getLeaderboard() { return leaderboard; }
 
     public boolean isActive() { return isActive; }
+
+    public boolean isEnding() { return isEnding; }
 
     public String getTimePeriod() { return timePeriod; }
 

@@ -14,7 +14,7 @@
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <server.directory>${user.home}\Desktop\Testserver\plugins</server.directory>
+        <server.directory>${user.home}\Desktop\LitTournaments\server1\plugins</server.directory>
     </properties>
 
     <build>
@@ -288,6 +288,14 @@
             <artifactId>votifierplus</artifactId>
             <version>1.0.7</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.4.3</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- For Heads -->

@@ -9,6 +9,7 @@ import me.waterarchery.littournaments.database.MySQL;
 import me.waterarchery.littournaments.database.SQLite;
 import me.waterarchery.littournaments.hooks.PlaceholderAPIHook;
 import me.waterarchery.littournaments.listeners.JoinLeaveListeners;
+import me.waterarchery.littournaments.listeners.RedisListener;
 import me.waterarchery.littournaments.listeners.tournamentListeners.*;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentPlayer;
@@ -54,6 +55,9 @@ public class LoadHandler {
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
         tournamentHandler.reloadTournaments();
 
+        logger.log("loading redis");
+        loadRedis();
+
         logger.log("Loading database");
         loadDatabase();
     }
@@ -90,6 +94,12 @@ public class LoadHandler {
         database.load(tournaments);
     }
 
+    public void loadRedis() {
+        RedisHandler redisHandler = RedisHandler.getInstance();
+
+        redisHandler.initialize();
+    }
+
     public void loadPlayers() {
         PlayerHandler playerHandler = PlayerHandler.getInstance();
 
@@ -104,6 +114,7 @@ public class LoadHandler {
         LitTournaments instance = LitTournaments.getInstance();
 
         instance.getServer().getPluginManager().registerEvents(new JoinLeaveListeners(), instance);
+        instance.getServer().getPluginManager().registerEvents(new RedisListener(), instance);
 
         // Tournaments
         instance.getServer().getPluginManager().registerEvents(new BlockBreakListener(), instance);

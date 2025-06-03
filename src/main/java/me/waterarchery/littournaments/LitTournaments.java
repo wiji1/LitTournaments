@@ -5,6 +5,7 @@ import me.waterarchery.litlibs.logger.Logger;
 import me.waterarchery.littournaments.database.Database;
 import me.waterarchery.littournaments.handlers.CommandHandler;
 import me.waterarchery.littournaments.handlers.LoadHandler;
+import me.waterarchery.littournaments.handlers.RedisHandler;
 import me.waterarchery.littournaments.hooks.PlaceholderAPIHook;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,6 +31,14 @@ public final class LitTournaments extends JavaPlugin {
         commandHandler.unRegisterCommands();
 
         database.shutdownPool();
+
+        RedisHandler redisHandler = RedisHandler.getInstance();
+
+        try {
+            redisHandler.shutdown();
+        } catch(Exception e) {
+            logger.log("Error shutting down Redis handler: " + e.getMessage());
+        }
 
         LoadHandler loadHandler = LoadHandler.getInstance();
         PlaceholderAPIHook placeholderAPIHook = loadHandler.getPlaceholderAPIHook();
