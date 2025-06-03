@@ -55,8 +55,8 @@ public abstract class Database {
 
     public void addPoint(UUID uuid, Tournament tournament, long point) {
         Runnable runnable = () -> {
-            String query = String.format("INSERT INTO %s (player, score) VALUES(?, ?) ON CONFLICT(player)" +
-                    " DO UPDATE SET score=score + ? WHERE player = ?;", tournament.getIdentifier());
+            String query = String.format("INSERT INTO %s (player, score) VALUES (?, ?)" +
+                    "ON DUPLICATE KEY UPDATE score = score + ?;", tournament.getIdentifier());
 
             try (Connection connection = getSQLConnection()) {
                 PreparedStatement stmt = connection.prepareStatement(query);
@@ -104,7 +104,7 @@ public abstract class Database {
 
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.isBeforeFirst())
+            if (rs.next())
                 return rs.getLong("score");
             else
                 return -9999;
