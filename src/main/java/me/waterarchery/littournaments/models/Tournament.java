@@ -131,8 +131,6 @@ public class Tournament {
 
         CompletableFuture.runAsync(database.getReloadTournamentRunnable(tournament))
                 .thenRun(() -> {
-                    System.out.println("Finished tournament: " + this.identifier);
-
                     if (shouldRestartAfterFinished) {
                         tournamentHandler.parseRewards(tournament);
                         database.clearTournament(tournament);
@@ -140,8 +138,6 @@ public class Tournament {
                         getLeaderboard().clear();
                         stopFinishTask();
                     }
-
-                    System.out.println("Attempting to set tournament to inactive: " + this.identifier);
 
                     File file = new File(LitTournaments.getInstance().getDataFolder(), "/tournaments/" + this.identifier + ".yml");
                     yamlConfiguration.set("Active", false);
@@ -152,7 +148,6 @@ public class Tournament {
                     }
 
                     this.isActive = false;
-                    System.out.println("Setting tournament to isActive = false: " + this.identifier);
                     tournamentHandler.parseRewards(tournament);
                     stopFinishTask();
                 }).thenRun(() -> {
