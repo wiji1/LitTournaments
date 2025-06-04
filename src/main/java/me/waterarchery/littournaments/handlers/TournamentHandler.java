@@ -180,6 +180,9 @@ public class TournamentHandler {
             Bukkit.broadcastMessage(message);
         }
         else if (command.startsWith("[COMMAND]")) {
+            RedisHandler redisHandler = RedisHandler.getInstance();
+            if(redisHandler.isEnabled() && !redisHandler.shouldGiveOutRewards()) return;
+
             command = command.replace("[COMMAND] ", "");
             if (targetPlayer != null) command = command.replace("%player%", targetPlayer);
 

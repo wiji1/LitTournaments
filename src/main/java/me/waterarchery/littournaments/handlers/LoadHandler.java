@@ -55,7 +55,7 @@ public class LoadHandler {
         TournamentHandler tournamentHandler = TournamentHandler.getInstance();
         tournamentHandler.reloadTournaments();
 
-        logger.log("loading redis");
+        logger.log("Loading redis");
         loadRedis();
 
         logger.log("Loading database");
