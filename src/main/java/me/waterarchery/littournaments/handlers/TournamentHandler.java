@@ -19,6 +19,8 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 
 public class TournamentHandler {
@@ -46,13 +48,24 @@ public class TournamentHandler {
 
         for (File file : contents) {
             try {
+                if (!file.canRead() || file.length() == 0) {
+                    System.out.println("Skipping unreadable or empty file: " + file.getName());
+                    continue;
+                }
+
+                String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+                if (content.contains("\0")) {
+                    System.out.println("File contains null bytes, attempting to clean: " + file.getName());
+                    content = content.replace("\0", "");
+                }
+
                 FileConfiguration yml = new YamlConfiguration();
-                yml.load(file);
+                yml.loadFromString(content);
 
                 String identifier = file.getName().split("\\.")[0];
                 loadTournament(identifier, yml);
             } catch (IOException | InvalidConfigurationException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to load tournament file: " + file.getName(), e);
             }
         }
     }

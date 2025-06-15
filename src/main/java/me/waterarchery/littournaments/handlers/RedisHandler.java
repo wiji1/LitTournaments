@@ -2,6 +2,8 @@ package me.waterarchery.littournaments.handlers;
 
 import me.waterarchery.litlibs.logger.Logger;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
 import me.waterarchery.littournaments.LitTournaments;
 import me.waterarchery.littournaments.api.events.RedisUpdateEvent;
@@ -23,15 +25,24 @@ public class RedisHandler {
 	private static final int KEEPALIVE_INTERVAL_SECONDS = 30;
 	private static final int KEEPALIVE_EXPIRY_SECONDS = 60;
 
+	private static final int MAX_TOTAL_CONNECTIONS = 20;
+	private static final int MAX_IDLE_CONNECTIONS = 10;
+	private static final int MIN_IDLE_CONNECTIONS = 2;
+	private static final int CONNECTION_TIMEOUT_MS = 3000;
+
+	private static final int SUBSCRIBER_MAX_TOTAL = 5;
+	private static final int SUBSCRIBER_MAX_IDLE = 2;
+	private static final int SUBSCRIBER_MIN_IDLE = 1;
+
 	private static final Logger logger = LitTournaments.getLitLibs().getLogger();
 
 	private static RedisHandler instance;
 	private boolean isEnabled;
 
-	private Jedis publisherJedis;
-	private Jedis subscriberJedis;
-	private Jedis storageJedis;
+	private JedisPool mainPool;
+	private JedisPool subscriberPool;
 	private JedisPubSub subscriber;
+	private Thread subscriberThread;
 
 	private BukkitTask keepAliveTask;
 	private BukkitTask cleanupTask;
@@ -61,56 +72,118 @@ public class RedisHandler {
 		String password = config.getString("Redis.password", "");
 
 		try {
-			publisherJedis = new Jedis(host, port);
-			if (!password.isEmpty()) {
-				publisherJedis.auth(password);
+			mainPool = createMainPool(host, port, password);
+			subscriberPool = createSubscriberPool(host, port, password);
+
+			try (Jedis jedis = mainPool.getResource()) {
+				jedis.ping();
+				logger.log("Successfully connected to Redis with connection pools!");
 			}
 
-			subscriberJedis = new Jedis(host, port);
-			if (!password.isEmpty()) {
-				subscriberJedis.auth(password);
-			}
+			setUpSubscriber(LitTournaments.getInstance());
 
-			storageJedis = new Jedis(host, port);
-			if (!password.isEmpty()) {
-				storageJedis.auth(password);
-			}
-
-			publisherJedis.ping();
-			logger.log("Successfully connected to Redis for PubSub and Storage!");
-
-			new Thread(() -> setUpListenEvent(LitTournaments.getInstance())).start();
 			setUpKeepAlive();
 
-			logger.log("Redis PubSub listener and keepalive system are set up and ready.");
-			logger.log("Server UUID: " + serverIdentifier);
+			logger.log("Redis connection pools, PubSub listener, and keepalive system are set up and ready.");
 
 		} catch (Exception e) {
 			LitTournaments.getInstance().getLogger().severe("Failed to connect to Redis: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
-	private void setUpListenEvent(LitTournaments pluginInstance) {
+	private JedisPool createMainPool(String host, int port, String password) {
+		JedisPoolConfig poolConfig = new JedisPoolConfig();
 
+		poolConfig.setMaxTotal(MAX_TOTAL_CONNECTIONS);
+		poolConfig.setMaxIdle(MAX_IDLE_CONNECTIONS);
+		poolConfig.setMinIdle(MIN_IDLE_CONNECTIONS);
+
+		poolConfig.setTestOnBorrow(true);
+		poolConfig.setTestOnReturn(true);
+		poolConfig.setTestWhileIdle(true);
+
+		poolConfig.setBlockWhenExhausted(true);
+
+		if (password.isEmpty()) {
+			return new JedisPool(poolConfig, host, port, CONNECTION_TIMEOUT_MS);
+		} else {
+			return new JedisPool(poolConfig, host, port, CONNECTION_TIMEOUT_MS, password);
+		}
+	}
+
+	private JedisPool createSubscriberPool(String host, int port, String password) {
+		JedisPoolConfig poolConfig = new JedisPoolConfig();
+
+		poolConfig.setMaxTotal(SUBSCRIBER_MAX_TOTAL);
+		poolConfig.setMaxIdle(SUBSCRIBER_MAX_IDLE);
+		poolConfig.setMinIdle(SUBSCRIBER_MIN_IDLE);
+
+		poolConfig.setTestOnBorrow(true);
+		poolConfig.setTestOnReturn(true);
+		poolConfig.setTestWhileIdle(true);
+
+		poolConfig.setBlockWhenExhausted(true);
+
+		if (password.isEmpty()) {
+			return new JedisPool(poolConfig, host, port, CONNECTION_TIMEOUT_MS);
+		} else {
+			return new JedisPool(poolConfig, host, port, CONNECTION_TIMEOUT_MS, password);
+		}
+	}
+
+	private void setUpSubscriber(LitTournaments pluginInstance) {
 		subscriber = new JedisPubSub() {
 			@Override
 			public void onMessage(String channel, String message) {
 				String[] parts = message.split(" ");
 				if (parts.length < 2) return;
 
-				RedisMessage action = RedisMessage.valueOf(parts[0]);
+				try {
+					RedisMessage action = RedisMessage.valueOf(parts[0]);
+					List<String> args = List.of(parts).subList(1, parts.length);
 
-				List<String> args = List.of(parts).subList(1, parts.length);
+					Bukkit.getScheduler().runTask(pluginInstance, () -> {
+						RedisUpdateEvent event = new RedisUpdateEvent(action, args);
+						Bukkit.getServer().getPluginManager().callEvent(event);
+					});
+				} catch (IllegalArgumentException e) {
+					logger.warn("Received unknown Redis message action: " + parts[0]);
+				}
+			}
 
-				Bukkit.getScheduler().runTask(pluginInstance, () -> {
-					RedisUpdateEvent event = new RedisUpdateEvent(action, args);
-					Bukkit.getServer().getPluginManager().callEvent(event);
-				});
+			@Override
+			public void onSubscribe(String channel, int subscribedChannels) {
+				logger.log("Successfully subscribed to Redis channel: " + channel);
+			}
+
+			@Override
+			public void onUnsubscribe(String channel, int subscribedChannels) {
+				logger.log("Unsubscribed from Redis channel: " + channel);
 			}
 		};
 
-		subscriberJedis.subscribe(subscriber, CHANNEL_NAME);
+		subscriberThread = new Thread(() -> {
+			while (!Thread.currentThread().isInterrupted()) {
+				try (Jedis jedis = subscriberPool.getResource()) {
+					logger.log("Starting Redis subscription listener...");
+					jedis.subscribe(subscriber, CHANNEL_NAME);
+				} catch (Exception e) {
+					if (!Thread.currentThread().isInterrupted()) {
+						logger.warn("Redis subscription connection lost, retrying in 5 seconds: " + e.getMessage());
+						try {
+							Thread.sleep(5000);
+						} catch (InterruptedException ie) {
+							Thread.currentThread().interrupt();
+							break;
+						}
+					}
+				}
+			}
+		}, "Redis-Subscriber-Thread");
 
+		subscriberThread.setDaemon(true);
+		subscriberThread.start();
 	}
 
 	private void setUpKeepAlive() {
@@ -130,53 +203,58 @@ public class RedisHandler {
 				KEEPALIVE_INTERVAL_SECONDS * 20L,
 				KEEPALIVE_INTERVAL_SECONDS * 20L
 		);
-
-		logger.log("Keepalive system started for server: " + serverIdentifier);
 	}
 
 	private void addServerToList() {
-		if (storageJedis == null) return;
+		if (mainPool == null) return;
 
-		storageJedis.sadd(SERVER_LIST_KEY, serverIdentifier.toString());
+		try (Jedis jedis = mainPool.getResource()) {
+			jedis.sadd(SERVER_LIST_KEY, serverIdentifier.toString());
+		} catch (Exception e) {
+			logger.warn("Failed to add server to list: " + e.getMessage());
+		}
 	}
 
 	private void removeServerFromList() {
-		if (storageJedis == null) return;
+		if (mainPool == null) return;
 
-		storageJedis.srem(SERVER_LIST_KEY, serverIdentifier.toString());
-		storageJedis.del(SERVER_KEY_PREFIX + serverIdentifier.toString());
-
-		logger.log("Server removed from active servers list: " + serverIdentifier);
+		try (Jedis jedis = mainPool.getResource()) {
+			jedis.srem(SERVER_LIST_KEY, serverIdentifier.toString());
+			jedis.del(SERVER_KEY_PREFIX + serverIdentifier.toString());
+			logger.log("Server removed from active servers list: " + serverIdentifier);
+		} catch (Exception e) {
+			logger.warn("Failed to remove server from list: " + e.getMessage());
+		}
 	}
 
 	private void sendKeepAlive() {
-		if (storageJedis == null) return;
+		if (mainPool == null) return;
 
-		try {
+		try (Jedis jedis = mainPool.getResource()) {
 			String serverKey = SERVER_KEY_PREFIX + serverIdentifier.toString();
 			long timestamp = System.currentTimeMillis();
-			storageJedis.setex(serverKey, KEEPALIVE_EXPIRY_SECONDS, String.valueOf(timestamp));
-
-			storageJedis.sadd(SERVER_LIST_KEY, serverIdentifier.toString());
-
+			jedis.setex(serverKey, KEEPALIVE_EXPIRY_SECONDS, String.valueOf(timestamp));
+			jedis.sadd(SERVER_LIST_KEY, serverIdentifier.toString());
 		} catch (Exception e) {
 			logger.warn("Failed to send keepalive: " + e.getMessage());
 		}
 	}
 
 	public Set<String> getActiveServers() {
-		if (storageJedis == null) {
+		if (mainPool == null) {
 			throw new IllegalStateException("Redis not initialized! Call initialize() first.");
 		}
 
-		Set<String> allServers = storageJedis.smembers(SERVER_LIST_KEY);
+		try (Jedis jedis = mainPool.getResource()) {
+			Set<String> allServers = jedis.smembers(SERVER_LIST_KEY);
 
-		return allServers.stream()
-				.filter(serverId -> {
-					String serverKey = SERVER_KEY_PREFIX + serverId;
-					return storageJedis.exists(serverKey);
-				})
-				.collect(Collectors.toSet());
+			return allServers.stream()
+					.filter(serverId -> {
+						String serverKey = SERVER_KEY_PREFIX + serverId;
+						return jedis.exists(serverKey);
+					})
+					.collect(Collectors.toSet());
+		}
 	}
 
 	public boolean shouldGiveOutRewards() {
@@ -201,16 +279,20 @@ public class RedisHandler {
 	}
 
 	public void cleanupExpiredServers() {
-		if (storageJedis == null) return;
+		if (mainPool == null) return;
 
-		Set<String> allServers = storageJedis.smembers(SERVER_LIST_KEY);
+		try (Jedis jedis = mainPool.getResource()) {
+			Set<String> allServers = jedis.smembers(SERVER_LIST_KEY);
 
-		for (String serverId : allServers) {
-			String serverKey = SERVER_KEY_PREFIX + serverId;
-			if (!storageJedis.exists(serverKey)) {
-				storageJedis.srem(SERVER_LIST_KEY, serverId);
-				logger.log("Cleaned up expired server: " + serverId);
+			for (String serverId : allServers) {
+				String serverKey = SERVER_KEY_PREFIX + serverId;
+				if (!jedis.exists(serverKey)) {
+					jedis.srem(SERVER_LIST_KEY, serverId);
+					logger.log("Cleaned up expired server: " + serverId);
+				}
 			}
+		} catch (Exception e) {
+			logger.warn("Failed to cleanup expired servers: " + e.getMessage());
 		}
 	}
 
@@ -223,10 +305,13 @@ public class RedisHandler {
 	}
 
 	private void publish(String message) {
-		if (publisherJedis == null) {
+		if (mainPool == null) {
 			throw new IllegalStateException("Redis not initialized! Call initialize() first.");
 		}
-		publisherJedis.publish(RedisHandler.CHANNEL_NAME, message);
+
+		try (Jedis jedis = mainPool.getResource()) {
+			jedis.publish(CHANNEL_NAME, message);
+		}
 	}
 
 	public void sendUpdate(RedisMessage message, String... args) {
@@ -239,6 +324,8 @@ public class RedisHandler {
 	}
 
 	public void shutdown() {
+		logger.log("Shutting down Redis handler...");
+
 		if (keepAliveTask != null && !keepAliveTask.isCancelled()) {
 			keepAliveTask.cancel();
 		}
@@ -253,14 +340,21 @@ public class RedisHandler {
 			subscriber.unsubscribe();
 		}
 
-		if (publisherJedis != null && publisherJedis.isConnected()) {
-			publisherJedis.close();
+		if (subscriberThread != null && subscriberThread.isAlive()) {
+			subscriberThread.interrupt();
+			try {
+				subscriberThread.join(5000);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
 		}
-		if (subscriberJedis != null && subscriberJedis.isConnected()) {
-			subscriberJedis.close();
+
+		if (mainPool != null && !mainPool.isClosed()) {
+			mainPool.close();
 		}
-		if (storageJedis != null && storageJedis.isConnected()) {
-			storageJedis.close();
+
+		if (subscriberPool != null && !subscriberPool.isClosed()) {
+			subscriberPool.close();
 		}
 
 		logger.log("Redis connections closed and server removed from active list.");
