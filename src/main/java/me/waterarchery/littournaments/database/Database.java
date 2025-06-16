@@ -2,13 +2,16 @@ package me.waterarchery.littournaments.database;
 
 import me.waterarchery.litlibs.LitLibs;
 import me.waterarchery.littournaments.LitTournaments;
+import me.waterarchery.littournaments.models.RewardInstance;
 import me.waterarchery.littournaments.models.Tournament;
 import me.waterarchery.littournaments.models.TournamentLeaderboard;
 import me.waterarchery.littournaments.models.TournamentValue;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -18,9 +21,16 @@ public abstract class Database {
     protected final LitTournaments instance;
     private static final ExecutorService threadPool = Executors.newFixedThreadPool(20);
 
+    public String rewardsTableName = "tournament_rewards";
+
     public String createTableToken = "CREATE TABLE IF NOT EXISTS {{TOURNAMENT_NAME}} (" +
             "`player` varchar(36) NOT NULL PRIMARY KEY," +
             "`score` int(11) NOT NULL" +
+            ");";
+
+    public String createRewardsTableToken = "CREATE TABLE IF NOT EXISTS {{TOURNAMENT_NAME}} (" +
+            "`player` varchar(36) NOT NULL," +
+            "`command` varchar(255) NOT NULL" +
             ");";
 
     public Database(LitTournaments instance){
@@ -47,6 +57,16 @@ public abstract class Database {
                     throw new RuntimeException(ex);
                 }
             });
+
+            try {
+                String query = createRewardsTableToken.replace("{{TOURNAMENT_NAME}}", rewardsTableName);
+                Statement s = connection.createStatement();
+                s.executeUpdate(query);
+                s.close();
+            }
+            catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
         }
         catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -186,6 +206,63 @@ public abstract class Database {
 
             try (Connection connection = getSQLConnection()) {
                 PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.executeUpdate();
+            }
+            catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
+
+        threadPool.submit(runnable);
+    }
+
+    public void addReward(RewardInstance rewardInstance) {
+        Runnable runnable = () -> {
+            String query = String.format("INSERT INTO %s (player, command) VALUES (?, ?);", rewardsTableName);
+
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.setString(1, rewardInstance.getPlayer().toString());
+                stmt.setString(2, rewardInstance.getCommand());
+                stmt.executeUpdate();
+            }
+            catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
+
+        threadPool.submit(runnable);
+    }
+
+    public CompletableFuture<List<String>> getRewardCommands(UUID player) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<String> rewardCommands = new ArrayList<>();
+            String query = String.format("SELECT command FROM %s WHERE player = ?;", rewardsTableName);
+
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.setString(1, player.toString());
+
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    String command = rs.getString("command");
+                    rewardCommands.add(command);
+                }
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            return rewardCommands;
+        }, threadPool);
+    }
+
+    public void clearRewards(UUID player) {
+        Runnable runnable = () -> {
+            String query = String.format("DELETE FROM %s WHERE player = ?;", rewardsTableName);
+
+            try (Connection connection = getSQLConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(query);
+                stmt.setString(1, player.toString());
                 stmt.executeUpdate();
             }
             catch (SQLException ex) {

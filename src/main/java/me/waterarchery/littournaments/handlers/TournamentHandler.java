@@ -9,6 +9,7 @@ import me.waterarchery.littournaments.models.TournamentLeaderboard;
 import me.waterarchery.littournaments.models.TournamentValue;
 import me.waterarchery.littournaments.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -48,14 +49,10 @@ public class TournamentHandler {
 
         for (File file : contents) {
             try {
-                if (!file.canRead() || file.length() == 0) {
-                    System.out.println("Skipping unreadable or empty file: " + file.getName());
-                    continue;
-                }
+                if (!file.canRead() || file.length() == 0) continue;
 
                 String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
                 if (content.contains("\0")) {
-                    System.out.println("File contains null bytes, attempting to clean: " + file.getName());
                     content = content.replace("\0", "");
                 }
 
@@ -65,7 +62,9 @@ public class TournamentHandler {
                 String identifier = file.getName().split("\\.")[0];
                 loadTournament(identifier, yml);
             } catch (IOException | InvalidConfigurationException e) {
-                throw new RuntimeException("Failed to load tournament file: " + file.getName(), e);
+                LitLibs litLibs = LitTournaments.getLitLibs();
+                Logger logger = litLibs.getLogger();
+                logger.error("Failed to load tournament from file: " + file.getName());
             }
         }
     }
@@ -138,8 +137,8 @@ public class TournamentHandler {
                 int pos = Integer.parseInt(rawPos);
                 TournamentValue value = leaderboard.getPlayer(pos).orElse(null);
                 if (value != null) {
-                    String name = value.getName();
-                    parseTournamentReward(reward, name);
+                    UUID uuid = value.getUUID();
+                    parseTournamentReward(reward, uuid);
                 }
             }
         }
@@ -151,45 +150,57 @@ public class TournamentHandler {
         List<String> commands = yml.getStringList("ConditionalCommands." + condition);
         commands.forEach(command -> {
             TournamentLeaderboard leaderboard = tournament.getLeaderboard();
-            String name = "None";
+            UUID uuid = null;
             if (command.contains("tournament_pos_1")) {
                 TournamentValue value = leaderboard.getPlayer(1).orElse(null);
-                if (value != null) name = value.getName();
-                command = command.replace("%tournament_pos_1%", name);
+                if (value != null) uuid = value.getUUID();
+                command = command.replace("%tournament_pos_1%", "%player%");
             }
             else if (command.contains("tournament_pos_2")) {
                 TournamentValue value = leaderboard.getPlayer(2).orElse(null);
-                if (value != null) name = value.getName();
-                command = command.replace("%tournament_pos_2%", name);
+                if (value != null) uuid = value.getUUID();
+                command = command.replace("%tournament_pos_2%", "%player%");
             }
             else if (command.contains("tournament_pos_3")) {
                 TournamentValue value = leaderboard.getPlayer(3).orElse(null);
-                if (value != null) name = value.getName();
-                command = command.replace("%tournament_pos_3%", name);
+                if (value != null) uuid = value.getUUID();
+                command = command.replace("%tournament_pos_3%", "%player%");
             }
             else if (command.contains("tournament_pos_4")) {
                 TournamentValue value = leaderboard.getPlayer(4).orElse(null);
-                if (value != null) name = value.getName();
-                command = command.replace("%tournament_pos_4%", name);
+                if (value != null) uuid = value.getUUID();
+                command = command.replace("%tournament_pos_4%", "%player%");
             }
             else if (command.contains("tournament_pos_5")) {
                 TournamentValue value = leaderboard.getPlayer(5).orElse(null);
-                if (value != null) name = value.getName();
-                command = command.replace("%tournament_pos_5%", name);
+                if (value != null) uuid = value.getUUID();
+                command = command.replace("%tournament_pos_5%", "%player%");
             }
-            parseTournamentReward(command, null);
+            parseTournamentReward(command, uuid);
         });
     }
 
-    public void parseTournamentReward(String command, @Nullable String targetPlayer) {
+    public void parseTournamentReward(String command, @Nullable UUID targetPlayer) {
         LitLibs libs = LitTournaments.getLitLibs();
 
         if (command.startsWith("[MESSAGE]") && targetPlayer != null) {
             Player player = Bukkit.getPlayer(targetPlayer);
-            if (player != null) libs.getMessageHandler().sendMessage(player, command.replace("[MESSAGE] ", ""));
+            if (player != null)  {
+                command = command.replace("[MESSAGE] ", "");
+                command = command.replace("%player%", player.getName());
+
+                libs.getMessageHandler().sendMessage(player, command);
+            }
         }
         else if (command.startsWith("[BROADCAST]")) {
             String message = ChatUtils.colorizeLegacy(command.replace("[BROADCAST] ", ""));
+
+            if (targetPlayer != null) {
+                OfflinePlayer player = Bukkit.getOfflinePlayer(targetPlayer);
+                String playerName = player.getName() != null ? player.getName() : "Unknown Player";
+                message = message.replace("%player%", playerName);
+            }
+
             Bukkit.broadcastMessage(message);
         }
         else if (command.startsWith("[COMMAND]")) {
@@ -197,15 +208,7 @@ public class TournamentHandler {
             if(redisHandler.isEnabled() && !redisHandler.shouldGiveOutRewards()) return;
 
             command = command.replace("[COMMAND] ", "");
-            if (targetPlayer != null) command = command.replace("%player%", targetPlayer);
-
-            String finalCommand = command;
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
-                }
-            }.runTask(LitTournaments.getInstance());
+            RewardsHandler.getInstance().giveCommandReward(targetPlayer, command);
         }
     }
 
