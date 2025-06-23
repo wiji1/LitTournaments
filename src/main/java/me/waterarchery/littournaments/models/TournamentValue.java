@@ -1,5 +1,6 @@
 package me.waterarchery.littournaments.models;
 
+import me.waterarchery.littournaments.LitTournaments;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -16,8 +17,14 @@ public class TournamentValue {
     }
 
     public String getName() {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-        return offlinePlayer.getName();
+        try {
+            String cachedName = LitTournaments.getDatabase().getPlayerName(uuid).get();
+            if (cachedName != null) return cachedName;
+        } catch (Exception e) {
+            LitTournaments.getLitLibs().getLogger().error("Could not fetch player name from database cache: " + uuid);
+        }
+
+        return "ERROR";
     }
 
     public UUID getUUID() {

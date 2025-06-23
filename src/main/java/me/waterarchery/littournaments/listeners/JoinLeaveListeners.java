@@ -22,6 +22,8 @@ public class JoinLeaveListeners implements Listener {
         playerHandler.addPlayer(tournamentPlayer);
         playerHandler.initializePlayer(tournamentPlayer, true);
 
+        LitTournaments.getDatabase().setPlayerName(player);
+
         LitTournaments.getDatabase().getRewardCommands(player.getUniqueId()).thenAccept(
             rewardCommands -> {
                 for (String rewardCommand : rewardCommands) {
